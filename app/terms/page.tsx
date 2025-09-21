@@ -9,8 +9,9 @@ export default function TermsOfServicePage() {
 
         <div className="mt-12 text-gray-700 leading-relaxed">
           <h2 className="text-2xl font-semibold text-gray-900">1. Agreement to Terms</h2>
+          {/* FIXED " here */}
           <p className="mt-4">
-            By accessing or using our application, Routina, and any related services (collectively, the "Service"), you agree to be bound by these Terms of Service ("Terms"). If you do not agree to these Terms, you may not use the Service.
+            By accessing or using our application, Routina, and any related services (collectively, the &quot;Service&quot;), you agree to be bound by these Terms of Service (&quot;Terms&quot;). If you do not agree to these Terms, you may not use the Service.
           </p>
 
           <h2 className="mt-8 text-2xl font-semibold text-gray-900">2. User Accounts</h2>
@@ -19,18 +20,20 @@ export default function TermsOfServicePage() {
           </p>
 
           <h2 className="mt-8 text-2xl font-semibold text-gray-900">3. User Content</h2>
+          {/* FIXED " here */}
           <p className="mt-4">
-            Our Service allows you to post, link, store, share and otherwise make available certain information, text, graphics, or other material ("Content"). You are responsible for the Content that you post on or through the Service, including its legality, reliability, and appropriateness. You retain any and all of your rights to any Content you submit.
+            Our Service allows you to post, link, store, share and otherwise make available certain information, text, graphics, or other material (&quot;Content&quot;). You are responsible for the Content that you post on or through the Service, including its legality, reliability, and appropriateness. You retain any and all of your rights to any Content you submit.
           </p>
 
           <h2 className="mt-8 text-2xl font-semibold text-gray-900">4. Prohibited Activities</h2>
           <p className="mt-4">
             You agree not to use the Service for any purpose that is illegal or prohibited by these Terms. You may not:
           </p>
+          {/* FIXED " here */}
           <ul className="mt-4 list-disc list-inside space-y-2">
             <li>Use the Service in any way that could damage, disable, overburden, or impair the Service.</li>
             <li>Attempt to gain unauthorized access to any part of the Service, other accounts, or computer systems.</li>
-            <li>Use any automated system, including "robots," "spiders," or "offline readers," to access the Service.</li>
+            <li>Use any automated system, including &quot;robots,&quot; &quot;spiders,&quot; or &quot;offline readers,&quot; to access the Service.</li>
             <li>Introduce any viruses, trojan horses, worms, or other material that is malicious or technologically harmful.</li>
             <li>Reverse engineer or attempt to extract the source code of our software.</li>
           </ul>
@@ -41,8 +44,9 @@ export default function TermsOfServicePage() {
           </p>
           
           <h2 className="mt-8 text-2xl font-semibold text-gray-900">6. Disclaimer of Warranties</h2>
+          {/* FIXED " here */}
           <p className="mt-4">
-            The Service is provided on an "AS IS" and "AS AVAILABLE" basis. We make no warranties, expressed or implied, regarding the operation or availability of the Service.
+            The Service is provided on an &quot;AS IS&quot; and &quot;AS AVAILABLE&quot; basis. We make no warranties, expressed or implied, regarding the operation or availability of the Service.
           </p>
 
           <h2 className="mt-8 text-2xl font-semibold text-gray-900">7. Limitation of Liability</h2>
@@ -52,7 +56,7 @@ export default function TermsOfServicePage() {
           
           <h2 className="mt-8 text-2xl font-semibold text-gray-900">8. Changes to Terms</h2>
           <p className="mt-4">
-            We reserve the right, at our sole discretion, to modify or replace these Terms at any time. We will provide at least 30 days' notice before any new terms take effect. By continuing to access or use our Service after those revisions become effective, you agree to be bound by the revised terms.
+            We reserve the right, at our sole discretion, to modify or replace these Terms at any time. We will provide at least 30 days&apos; notice before any new terms take effect. By continuing to access or use our Service after those revisions become effective, you agree to be bound by the revised terms.
           </p>
 
           <h2 className="mt-8 text-2xl font-semibold text-gray-900">9. Contact Us</h2>

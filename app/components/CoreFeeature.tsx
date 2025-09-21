@@ -1,5 +1,7 @@
 import { ListTodo, Repeat, BarChart3, AppWindow, BellRing, Target } from 'lucide-react';
 
+// ... (features array remains the same)
+
 const features = [
   {
     name: 'Smart Task Management',
@@ -33,6 +35,7 @@ const features = [
   },
 ];
 
+
 export default function CoreFeatures() {
   return (
     <section id="features" className="bg-gradient-to-b from-white to-gray-50 py-24 sm:py-32">
@@ -43,8 +46,9 @@ export default function CoreFeatures() {
           <h2 className="mt-2 text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">
             A Better Way to Be Productive
           </h2>
+          {/* FIXED a ' and ' here */}
           <p className="mt-6 text-lg leading-8 text-gray-600">
-            Routina isn't just another planner. It's a complete ecosystem of tools designed to help you organize your life and achieve your ambitions.
+            Routina isn&apos;t just another planner. It&apos;s a complete ecosystem of tools designed to help you organize your life and achieve your ambitions.
           </p>
         </div>
 
