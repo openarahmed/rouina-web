@@ -5,6 +5,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+import { AuthProvider } from "./context/AuthContext"; // ★★★ পরিবর্তন: AuthProvider ইম্পোর্ট করা হয়েছে ★★★
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,9 +22,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.className} bg-gray-50`}>
-       <Navbar></Navbar>
-        <main>{children}</main>
-        <Footer></Footer>
+        {/* ★★★ পরিবর্তন: AuthProvider দিয়ে পুরো অ্যাপকে Wrap করা হয়েছে ★★★ */}
+        <AuthProvider> 
+          <Navbar />
+          <main>{children}</main>
+          <Footer />
+        </AuthProvider>
       </body>
     </html>
   );

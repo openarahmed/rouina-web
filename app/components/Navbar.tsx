@@ -1,32 +1,33 @@
-// File: app/components/Navbar.tsx
-
 "use client";
 
 import Link from 'next/link';
 import { useState } from 'react';
 import { Menu, X } from 'lucide-react';
+import { useAuth } from '../context/AuthContext'; 
+import { signOut as firebaseSignOut } from 'firebase/auth';
+import { auth } from '../lib/firebaseConfig';
+import { useRouter } from 'next/navigation';
 
-// --- Mock Auth Hook for Demonstration ---
-// TODO: You will replace this with your actual useAuth hook from Firebase later.
-const useAuth = () => {
-  // To test the logged-in view, change `null` to an object like `{ name: 'Shakil' }`
-  const state = {
-    user: null, 
-    signOut: () => console.log('Signing out...'),
-  };
-  return state;
-};
-// --- End Mock Auth Hook ---
-
-// Make sure you are using "export default" here
 export default function Navbar() {
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const { user, signOut } = useAuth();
+  const { user, initializing } = useAuth();
+  const router = useRouter();
+
+  const handleSignOut = async () => {
+    try {
+      await firebaseSignOut(auth);
+      // লগ আউট করার পর হোমপেজে পাঠিয়ে দেওয়া হবে
+      router.push('/');
+    } catch (error) {
+      console.error("Error signing out: ", error);
+    }
+  };
 
   const navLinks = [
     { name: 'Features', href: '/#features' },
     { name: 'Pricing', href: '/pricing' },
     { name: 'About', href: '/about' },
+    { name: 'Dashboard', href: '/dashboard' },
   ];
 
   return (
@@ -53,13 +54,15 @@ export default function Navbar() {
 
           {/* Desktop Auth Buttons */}
           <div className="hidden md:block">
-            {user ? (
+            {initializing ? (
+                <div className="w-24 h-8 bg-gray-200 rounded-md animate-pulse"></div>
+            ) : user ? (
               <div className="flex items-center space-x-4">
                 <Link href="/dashboard" className="text-gray-600 hover:bg-gray-100 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">
                   Dashboard
                 </Link>
                 <button
-                  onClick={signOut}
+                  onClick={handleSignOut}
                   className="bg-purple-100 text-purple-700 hover:bg-purple-200 px-4 py-2 rounded-md text-sm font-semibold transition-colors"
                 >
                   Sign Out
@@ -78,12 +81,10 @@ export default function Navbar() {
           </div>
 
           {/* Mobile Menu Button */}
-          <div className="flex md:hidden">
+          <div className="-mr-2 flex md:hidden">
             <button
               onClick={() => setMobileMenuOpen(!isMobileMenuOpen)}
-              className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
-              aria-controls="mobile-menu"
-              aria-expanded="false"
+              className="inline-flex items-center justify-center p-2 rounded-md text-gray-500 hover:text-purple-600 hover:bg-purple-50 focus:outline-none"
             >
               <span className="sr-only">Open main menu</span>
               {isMobileMenuOpen ? <X className="block h-6 w-6" /> : <Menu className="block h-6 w-6" />}
@@ -97,30 +98,32 @@ export default function Navbar() {
         <div className="md:hidden" id="mobile-menu">
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
             {navLinks.map((link) => (
-              <Link key={link.name} href={link.href} className="text-gray-600 hover:bg-gray-100 block px-3 py-2 rounded-md text-base font-medium">
+              <Link key={link.name} href={link.href} onClick={()=> setMobileMenuOpen(false)} className="text-gray-600 hover:bg-gray-100 block px-3 py-2 rounded-md text-base font-medium">
                 {link.name}
               </Link>
             ))}
           </div>
           <div className="pt-4 pb-3 border-t border-gray-200">
-             {user ? (
+             {initializing ? (
+                <div className="h-10 mx-2 bg-gray-200 rounded-md animate-pulse"></div>
+            ) : user ? (
               <div className="px-2 space-y-2">
-                 <Link href="/dashboard" className="block text-center w-full bg-purple-600 text-white hover:bg-purple-700 px-4 py-2 rounded-md text-base font-semibold">
-                  Dashboard
-                </Link>
-                 <button
-                  onClick={signOut}
-                  className="block text-center w-full bg-gray-100 text-gray-700 hover:bg-gray-200 px-4 py-2 rounded-md text-base font-semibold"
-                >
-                  Sign Out
-                </button>
+                   <Link href="/dashboard" onClick={()=> setMobileMenuOpen(false)} className="block text-center w-full bg-purple-600 text-white hover:bg-purple-700 px-4 py-2 rounded-md text-base font-semibold">
+                    Dashboard
+                  </Link>
+                   <button
+                    onClick={()=>{handleSignOut(); setMobileMenuOpen(false);}}
+                    className="block text-center w-full bg-gray-100 text-gray-700 hover:bg-gray-200 px-4 py-2 rounded-md text-base font-semibold"
+                  >
+                    Sign Out
+                  </button>
               </div>
             ) : (
               <div className="px-2 space-y-2">
-                <Link href="/login" className="block text-center w-full bg-gray-100 text-gray-700 hover:bg-gray-200 px-4 py-2 rounded-md text-base font-semibold">
+                <Link href="/login" onClick={()=> setMobileMenuOpen(false)} className="block text-center w-full bg-gray-100 text-gray-700 hover:bg-gray-200 px-4 py-2 rounded-md text-base font-semibold">
                   Log In
                 </Link>
-                <Link href="/signup" className="block text-center w-full bg-purple-600 text-white hover:bg-purple-700 px-4 py-2 rounded-md text-base font-semibold">
+                <Link href="/signup" onClick={()=> setMobileMenuOpen(false)} className="block text-center w-full bg-purple-600 text-white hover:bg-purple-700 px-4 py-2 rounded-md text-base font-semibold">
                   Sign Up
                 </Link>
               </div>
