@@ -1,4 +1,3 @@
-// File: app/components/dashboard/Header.tsx
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
@@ -27,7 +26,10 @@ const Header = (props: HeaderProps) => {
 
   return (
     <header className="sticky top-0 z-40 flex w-full bg-white border-b border-gray-200">
-      <div className="flex flex-grow items-center justify-between py-4 px-4 md:px-6 2xl:px-11">
+      {/* ★★★ পরিবর্তন: py-4 থেকে py-3 করা হয়েছে উচ্চতা কমানোর জন্য ★★★ */}
+      <div className="flex flex-grow items-center justify-between py-3 px-4 md:px-6 2xl:px-11">
+        
+        {/* */}
         <div className="flex items-center gap-2 sm:gap-4">
           {/* */}
           <button
@@ -57,7 +59,15 @@ const Header = (props: HeaderProps) => {
         </div>
 
 
-        <div className="flex items-center gap-3 sm:gap-5">
+        {/* */}
+        {/* ★★★ পরিবর্তন: gap-3/5 থেকে gap-2/4 করা হয়েছে ★★★ */}
+        <div className="flex items-center gap-2 sm:gap-4">
+          
+          {/* ★★★ নতুন: Mobile Search Icon ★★★ */}
+          <button className="p-2 text-gray-600 rounded-full hover:bg-gray-100 focus:outline-none block lg:hidden">
+            <Search size={22} />
+          </button>
+
           {/* */}
           <div className="relative">
             <span className="absolute -top-1 -right-1 h-2.5 w-2.5 rounded-full bg-red-500 border-2 border-white"></span>
@@ -79,17 +89,17 @@ const Header = (props: HeaderProps) => {
                 <span className="block text-xs text-gray-500">Administrator</span>
               </span>
 
-              {/* ★★★ পরিবর্তন: ছবির সাইজ h-10 w-10 থেকে h-12 w-12 করা হয়েছে ★★★ */}
-              <span className="h-12 w-12 rounded-full">
+              {/* ★★★ পরিবর্তন: ছবির সাইজ মোবাইলের জন্য ছোট করা হয়েছে (h-9 w-9) ★★★ */}
+              <span className="h-9 w-9 md:h-10 md:w-10 rounded-full">
                 <Image
-                  width={148} // ★★★ পরিবর্তন: 40 থেকে 48 করা হয়েছে
-                  height={148} // ★★★ পরিবর্তন: 40 থেকে 48 করা হয়েছে
-                  src={'https://encrypted-tbn0.gstatic.com/licensed-image?q=tbn:ANd9GcSJ8d4Nqh1j5UqCxwipt1pyMfjMMEA8S-dnsLLzv5VbfPqrk3Bpjh_gsT4aLPhRNNRSZ_BzieEVPCpB6mU'} // size=128 for better resolution
+                  width={48} 
+                  height={48}
+                  src={'https://encrypted-tbn0.gstatic.com/licensed-image?q=tbn:ANd9GcSJ8d4Nqh1j5UqCxwipt1pyMfjMMEA8S-dnsLLzv5VbfPqrk3Bpjh_gsT4aLPhRNNRSZ_BzieEVPCpB6mU'}
                   alt="User"
                   className="rounded-full w-full h-full object-cover"
                 />
               </span>
-              <ChevronDown size={20} className={`transition-transform duration-200 text-gray-500 ${isDropdownOpen ? 'rotate-180' : ''}`} />
+              <ChevronDown size={20} className={`transition-transform duration-200 text-gray-500 hidden sm:block ${isDropdownOpen ? 'rotate-180' : ''}`} />
             </button>
 
             {/* */}

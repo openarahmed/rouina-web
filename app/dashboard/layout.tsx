@@ -1,8 +1,8 @@
-// File: app/dashboard/layout.tsx
 'use client';
 import React, { useState } from 'react';
 import Sidebar from '../components/dashboard/Sidebar';
 import Header from '../components/dashboard/Header';
+import ProtectedRoute from '../components/ProtectedRoute'; // প্রোটেক্টেড রুট এখানে ইম্পোর্ট করা হলো
 
 export default function DashboardLayout({
   children,
@@ -12,29 +12,32 @@ export default function DashboardLayout({
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
-    // ★★★ পরিবর্তন: dark: ক্লাসগুলো সরানো হয়েছে ★★★
-    <div className="bg-gray-50">
-      <div className="flex h-screen overflow-hidden">
-        {/* */}
-        <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
-        {/* */}
+    // ★★★ পরিবর্তন: সম্পূর্ণ লেআউটটি এখন ProtectedRoute দিয়ে র‍্যাপ করা হয়েছে ★★★
+    <ProtectedRoute>
+      <div className="bg-gray-50">
+        <div className="flex h-screen overflow-hidden">
+          {/* Sidebar */}
+          <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
+          {/* Sidebar */}
 
-        {/* */}
-        <div className="relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden">
-          {/* */}
-          <Header sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
-          {/* */}
+          {/* Content area */}
+          <div className="relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden">
+            {/* Header */}
+            <Header sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
+            {/* Header */}
 
-          {/* */}
-          <main>
-            <div className="mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-10">
-              {children}
-            </div>
-          </main>
-          {/* */}
+            {/* Main content */}
+            <main>
+              <div className="mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-10">
+                {children}
+              </div>
+            </main>
+            {/* Main content */}
+          </div>
+          {/* Content area */}
         </div>
-        {/* */}
       </div>
-    </div>
+    </ProtectedRoute>
   );
 }
+

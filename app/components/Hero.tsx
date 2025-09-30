@@ -1,62 +1,145 @@
-// File: app/components/Hero.tsx
+// File: app/components/Hero.tsx (আপনার ফাইল)
+
+"use client"; // Framer Motion ব্যবহারের জন্য এটি Client Component হতে হবে
 
 import Link from 'next/link';
-import { PlayCircle } from 'lucide-react';
+import { PlayCircle, Download } from 'lucide-react';
+import { motion } from 'framer-motion';
+import Image from 'next/image'; // Image কম্পোনেন্ট import করুন
 
-export default function Hero() {
+// ★★★ ফোন মকআপ ডেটা: এখানে ফোনের ছবি, পজিশন এবং অ্যানিমেশন ডিলে সেট করা হয়েছে ★★★
+const phoneMockups = [
+  {
+    src: "/mockups/phone-1.png", // public/mockups/ ফোল্ডারে ছবি রাখুন
+    position: "bottom-[-10%] sm:bottom-[-20%] left-1/2 -translate-x-1/2",
+    rotation: "rotate-0",
+    animationDelay: 0.1,
+  },
+  {
+    src: "/mockups/phone-2.png",
+    position: "top-[15%] left-[-10%] sm:left-[-5%]",
+    rotation: "-rotate-[25deg]",
+    animationDelay: 0.3,
+  },
+  {
+    src: "/mockups/phone-3.png",
+    position: "top-[15%] right-[-10%] sm:right-[-5%]",
+    rotation: "rotate-[25deg]",
+    animationDelay: 0.5,
+  },
+  {
+    src: "/mockups/phone-4.png",
+    position: "bottom-[-5%] left-[5%] sm:left-[15%]",
+    rotation: "rotate-[15deg]",
+    animationDelay: 0.7,
+  },
+  {
+    src: "/mockups/phone-5.png",
+    position: "bottom-[-5%] right-[5%] sm:right-[15%]",
+    rotation: "-rotate-[15deg]",
+    animationDelay: 0.9,
+  },
+];
+
+// ★★★ অ্যানিমেশনের জন্য ভ্যারিয়েন্ট ★★★
+const floatingAnimation = {
+    float: (delay: number) => ({
+      y: ["-8px", "8px"],
+      transition: {
+        delay,
+        duration: 3,
+        repeat: Infinity,
+        repeatType: "reverse",
+        ease: "easeInOut",
+      },
+    }),
+};
+
+// ★★★ লরেল আইকন (SVG) ★★★
+const LaurelIcon = () => (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 21C14.0823 21 16.0344 20.3458 17.6568 19.1213C19.2792 17.8968 20.5 16.1623 21 14.25M12 21C9.91773 21 7.96561 20.3458 6.34315 19.1213C4.72068 17.8968 3.5 16.1623 3 14.25M12 21V15M3 14.25C3 10 7 3 12 3C17 3 21 10 21 14.25" stroke="#9ca3af" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+);
+
+
+export default function Hero() { // ★★★ ফাংশনের নাম 'Hero' রাখা হয়েছে ★★★
   return (
-    // This is the only line that changed:
-    <section className="relative flex items-center min-h-screen overflow-hidden bg-gradient-to-br from-white via-purple-50 to-indigo-50 py-12">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="lg:grid lg:grid-cols-2 lg:gap-12 items-center">
-          {/* Left Column: Content */}
-          <div className="text-center lg:text-left mb-12 lg:mb-0">
-            {/* Badge */}
-            <span className="inline-block bg-purple-100 text-purple-700 text-sm font-medium px-4 py-1 rounded-full mb-4">
-              ✨ Routina Web is Here!
-            </span>
-
-            {/* Headline */}
-            <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-gray-900 leading-tight tracking-tighter">
-              Organize Your Life with <span className="text-purple-600">Smart Routines</span>
-            </h1>
-
-            {/* Subheading */}
-            <p className="mt-6 max-w-xl lg:max-w-md mx-auto lg:mx-0 text-lg text-gray-700">
-              Transform chaos into consistency. Routina helps you build powerful habits, manage your tasks effortlessly, and achieve your goals with clarity.
-            </p>
-
-            {/* Call to Action Buttons */}
-            <div className="mt-10 flex justify-center lg:justify-start items-center gap-4 flex-wrap">
-              <Link
-                href="/signup"
-                className="inline-flex items-center justify-center px-8 py-3 border border-transparent text-base font-semibold rounded-lg text-white bg-purple-600 hover:bg-purple-700 transition-all duration-300 ease-in-out transform hover:-translate-y-1 hover:shadow-xl shadow-lg"
-              >
-                Start Free Today
-              </Link>
-              <Link
-                href="/demo"
-                className="inline-flex items-center justify-center px-8 py-3 border border-purple-200 text-base font-medium rounded-lg text-purple-700 bg-white hover:bg-purple-50 transition-all duration-300 ease-in-out transform hover:-translate-y-1 hover:shadow-md"
-              >
-                <PlayCircle className="w-5 h-5 mr-2" /> Watch Demo
-              </Link>
-            </div>
+    <section className="relative bg-black min-h-screen flex flex-col items-center justify-center text-center py-24 sm:py-28 overflow-hidden">
+      
+      {/* Background Glow */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(168,_85,_247,_0.15),_transparent_70%)] -z-0"></div>
+      
+      {/* Text Content */}
+      <div className="container relative z-10 mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-4xl mx-auto">
+          
+          <div className="inline-flex items-center gap-x-2 text-gray-400 text-sm font-semibold mb-6">
+            <LaurelIcon />
+            <span>200K+ Active Installs</span>
+            <LaurelIcon />
           </div>
 
-          {/* Right Column: Image Placeholder */}
-          <div className="relative flex justify-center lg:justify-end">
-            <div className="w-full max-w-lg lg:max-w-none lg:w-[550px] aspect-[16/10] bg-gradient-to-br from-purple-200 to-indigo-300 rounded-2xl shadow-2xl overflow-hidden
-                            flex items-center justify-center text-white text-xl font-bold p-8
-                            transform rotate-3 scale-105 hover:rotate-0 hover:scale-100 transition-transform duration-500 ease-out">
-              <span className="absolute inset-0 bg-grid-small-white/[0.2] [mask-image:linear-gradient(to_bottom,white,transparent)]" />
-              <span className="absolute inset-0 flex items-center justify-center text-purple-800 text-sm md:text-base font-semibold text-center leading-relaxed p-4">
-                Imagine your beautifully designed app here, showcasing its key features.
-              </span>
-            </div>
-            <div className="hidden lg:block absolute -bottom-16 -right-16 w-64 h-64 bg-purple-300 opacity-20 rounded-full mix-blend-multiply filter blur-xl animate-blob" />
-            <div className="hidden lg:block absolute -top-16 -left-16 w-72 h-72 bg-indigo-300 opacity-20 rounded-full mix-blend-multiply filter blur-xl animation-delay-2000 animate-blob" />
-          </div>
+          <motion.h1 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="text-4xl sm:text-6xl font-extrabold text-white tracking-tight"
+          >
+            Your path to getting things done
+          </motion.h1>
+
+          <motion.p 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
+            className="mt-6 max-w-2xl mx-auto text-lg text-gray-400"
+          >
+            Packed with powerful tools that are easy to use, Routina helps you stay productive without the overwhelm.
+          </motion.p>
+
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
+            className="mt-10 flex justify-center items-center gap-4 flex-wrap"
+          >
+            <Link
+              href="/signup"
+              className="inline-flex items-center justify-center px-7 py-3 gap-2 border border-transparent text-base font-semibold rounded-full text-black bg-white hover:bg-gray-200 transition-all duration-300 transform hover:scale-105 shadow-lg"
+            >
+              <Download className="w-5 h-5" /> Download App
+            </Link>
+            <Link
+              href="#features"
+              className="inline-flex items-center justify-center px-7 py-3 gap-2 border border-white/20 text-base font-semibold rounded-full text-white bg-white/10 hover:bg-white/20 backdrop-blur-sm transition-all duration-300 transform hover:scale-105 shadow-lg"
+            >
+              <PlayCircle className="w-5 h-5" /> Discover More
+            </Link>
+          </motion.div>
         </div>
+      </div>
+
+      {/* ★★★ Floating Phone Mockups ★★★ */}
+      <div className="absolute inset-0 w-full h-full z-0">
+          {phoneMockups.map((phone, index) => (
+              <motion.div
+                  key={index}
+                  className={`absolute w-[150px] sm:w-[250px] ${phone.position} ${phone.rotation}`}
+                  custom={phone.animationDelay}
+                  variants={floatingAnimation}
+                  animate="float"
+              >
+                  <Image
+                      src={phone.src}
+                      alt={`Routina app mockup ${index + 1}`}
+                      width={250}
+                      height={500}
+                      className="object-contain"
+                      priority={index < 3}
+                  />
+              </motion.div>
+          ))}
       </div>
     </section>
   );
