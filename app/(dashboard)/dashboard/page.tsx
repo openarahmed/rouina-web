@@ -2,11 +2,11 @@
 'use client';
 
 import React, { useEffect, useState, ReactNode } from 'react';
-import { db } from '../lib/firebaseConfig';
+import { db } from '../../lib/firebaseConfig';
 import { collection, onSnapshot, query, where, orderBy, limit, Timestamp } from 'firebase/firestore';
 import { Users, Mail, CheckCircle2, XCircle } from 'lucide-react';
-import ChartOne from '../components/dashboard/ChartOne';
-import RecentMembersTable from '../components/dashboard/RecentMembersTable';
+import ChartOne from '../../components/dashboard/ChartOne';
+import RecentMembersTable from '../../components/dashboard/RecentMembersTable';
 
 // ... (interface এবং StatCard কম্পোনেন্ট অপরিবর্তিত)
 interface ClubStats { totalRequests: number; approved: number; denied: number; pending: number; }

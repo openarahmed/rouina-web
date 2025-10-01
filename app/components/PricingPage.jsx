@@ -41,8 +41,8 @@ export default function RoutinaPricing() {
       features: [
         'Everything in the Monthly plan',
         'Save 16% annually (2 months free)',
-        'Personalized AI routine coaching',
-        'Early access to new features',
+               'Completely Ad-free experience',
+
         'Priority customer support',
         'Access to curated job listings',
         'Daily AI-powered tips & tricks',
@@ -52,10 +52,10 @@ export default function RoutinaPricing() {
   ];
 
   return (
-    <section className="relative w-full bg-[#121217] text-white py-16 sm:py-24 px-4 sm:px-6 lg:px-8 overflow-hidden">
+    <section className="relative w-full bg-[#0a030a] text-white py-16 sm:py-24 px-4 sm:px-6 lg:px-8 overflow-hidden">
       {/* Decorative background elements */}
-      <div className="absolute top-20 -left-10 w-40 h-40 bg-purple-500/20 rounded-full filter blur-3xl opacity-50"></div>
-      <div className="absolute top-10 -right-10 w-40 h-40 bg-teal-500/20 rounded-full filter blur-3xl opacity-50"></div>
+      <div className="absolute top-20 -left-10 w-40 h-40 bg-[#6D46C1] rounded-full filter blur-3xl opacity-50"></div>
+      <div className="absolute top-10 -right-10 w-40 h-40 bg-[#4c0e4c] rounded-full filter blur-3xl opacity-50"></div>
 
       <div className="relative max-w-7xl mx-auto text-center">
         <h1 className="text-4xl sm:text-6xl font-bold tracking-normal">
@@ -73,10 +73,10 @@ export default function RoutinaPricing() {
             key={plan.name}
             className={`
               relative rounded-2xl p-[1.5px]
-              ${plan.isFeatured ? 'bg-gradient-to-br from-[#6d46c1] to-teal-400' : 'bg-gradient-to-br from-gray-800 to-transparent'}
+              ${plan.isFeatured ? 'bg-gradient-to-br from-[#6D46C1] to-[#340a34]' : 'bg-gradient-to-br from-[#6D46C1]/40 to-transparent'}
             `}
           >
-            <div className="relative rounded-[15px] bg-[#121217] p-6 h-full flex flex-col">
+            <div className="relative rounded-[15px] bg-[#0a030a]/90 shadow-[#6D46C1]/20 shadow-lg p-6 h-full flex flex-col">
               {plan.isFeatured && (
                 <div className="absolute top-0 -translate-y-1/2 w-full flex justify-center">
                   <span className="bg-[#6d46c1] text-white text-xs font-bold px-4 py-1 rounded-full">
@@ -100,8 +100,8 @@ export default function RoutinaPricing() {
                   className={`
                     block w-full text-center mt-8 py-3 rounded-lg font-semibold transition-all duration-300
                     ${plan.isFeatured
-                      ? 'bg-transparent border border-[#6d46c1] text-white hover:bg-[#6d46c1]/20'
-                      : 'bg-white text-black hover:bg-gray-200'
+                      ? 'bg-transparent border border-white text-white hover:bg-[#6d46c1]'
+                      : 'bg-[#6D46C1]/80 text-white hover:bg-[#6D46C1]'
                     }
                   `}
                 >

@@ -86,7 +86,7 @@ export default function Hero() { // ★★★ ফাংশনের নাম 'H
             transition={{ duration: 0.8, ease: "easeOut" }}
             className="text-4xl sm:text-6xl font-extrabold text-white tracking-tight"
           >
-            Your path to getting things done
+            Your path to <span className='text-[#6D46C1]'>getting things done</span>
           </motion.h1>
 
           <motion.p 
@@ -106,7 +106,7 @@ export default function Hero() { // ★★★ ফাংশনের নাম 'H
           >
             <Link
               href="/signup"
-              className="inline-flex items-center justify-center px-7 py-3 gap-2 border border-transparent text-base font-semibold rounded-full text-black bg-white hover:bg-gray-200 transition-all duration-300 transform hover:scale-105 shadow-lg"
+              className="inline-flex items-center justify-center px-7 py-3 gap-2 border border-transparent text-base font-semibold rounded-full text-white bg-[#6D46C1] transition-all duration-300 transform hover:scale-105 shadow-lg"
             >
               <Download className="w-5 h-5" /> Download App
             </Link>

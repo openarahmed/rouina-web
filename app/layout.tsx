@@ -3,12 +3,8 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import Navbar from "./components/Navbar";
-import Footer from "./components/Footer";
+// Navbar and Footer imports are removed from here
 import { AuthProvider } from "./context/AuthContext";
-
-// ThemeProvider import সরিয়ে ফেলা হয়েছে
-// import { ThemeProvider } from "./context/ThemeContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -23,21 +19,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    // suppressHydrationWarning সরিয়ে ফেলা হয়েছে কারণ থিম পরিবর্তন হচ্ছে না
     <html lang="en">
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </head>
       
-      {/* <body> থেকে dark mode এর ক্লাসগুলো সরিয়ে শুধুমাত্র light mode এর ক্লাস রাখা হয়েছে */}
-      <body className={`${inter.className} bg-gray-50 text-gray-900`}>
-        {/* ThemeProvider সরিয়ে দেওয়া হয়েছে */}
+      {/* <body> tag is now clean, without any specific theme classes */}
+      <body className={inter.className}>
         <AuthProvider>
-          <Navbar />
-          <main className="min-h-screen">
-            {children}
-          </main>
-          <Footer />
+          {/* Navbar and Footer are no longer here. */}
+          {/* This layout now simply renders the children from the route group layouts. */}
+          {children}
         </AuthProvider>
       </body>
     </html>

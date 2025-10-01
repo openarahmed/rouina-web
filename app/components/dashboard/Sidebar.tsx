@@ -3,7 +3,7 @@
 import React, { useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { LayoutDashboard, Mail, User, Settings, BarChart3, Users, FilePlus, Newspaper, X } from 'lucide-react';
+import { LayoutDashboard, Mail, User, Settings, BarChart3, Users, FilePlus, Newspaper, X, Home } from 'lucide-react';
 
 interface SidebarProps {
   sidebarOpen: boolean;
@@ -60,7 +60,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
         {/* */}
         <div className="flex items-center justify-between gap-2 px-6 py-5.5 lg:py-6.5">
           <Link 
-            href="/dashboard" 
+            href="" 
             className="text-2xl font-bold text-purple-600"
             onClick={() => setSidebarOpen(false)} // ★★★ onClick যোগ করা হয়েছে ★★★
           >
@@ -86,10 +86,10 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               <ul className="mb-6 flex flex-col gap-1.5">
                 <li>
                   <Link
-                    href="/dashboard"
+                    href=""
                     onClick={() => setSidebarOpen(false)} // ★★★ onClick যোগ করা হয়েছে ★★★
                     className={`group relative flex items-center gap-2.5 rounded-md py-2 px-4 font-medium text-gray-600 duration-300 ease-in-out hover:bg-gray-100 ${
-                      pathname === '/dashboard' && 'bg-purple-50 text-purple-600'
+                      pathname === '' && 'bg-purple-50 text-purple-600'
                     }`}
                   >
                     <LayoutDashboard size={18} />
@@ -115,10 +115,10 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               <ul className="mb-6 flex flex-col gap-1.5">
                 <li>
                   <Link
-                    href="/dashboard/requests"
+                    href="/requests"
                     onClick={() => setSidebarOpen(false)} // ★★★ onClick যোগ করা হয়েছে ★★★
                     className={`group relative flex items-center gap-2.5 rounded-md py-2 px-4 font-medium text-gray-600 duration-300 ease-in-out hover:bg-gray-100 ${
-                      pathname.includes('/dashboard/requests') && 'bg-purple-50 text-purple-600'
+                      pathname.includes('/requests') && 'bg-purple-50 text-purple-600'
                     }`}
                   >
                     <Mail size={18} />
@@ -127,10 +127,10 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 </li>
                 <li>
                   <Link
-                    href="/dashboard/members"
+                    href="/members"
                     onClick={() => setSidebarOpen(false)} // ★★★ onClick যোগ করা হয়েছে ★★★
                     className={`group relative flex items-center gap-2.5 rounded-md py-2 px-4 font-medium text-gray-600 duration-300 ease-in-out hover:bg-gray-100 ${
-                      pathname.includes('/dashboard/members') && 'bg-purple-50 text-purple-600'
+                      pathname.includes('/members') && 'bg-purple-50 text-purple-600'
                     }`}
                   >
                     <Users size={18} />
@@ -146,10 +146,10 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               <ul className="mb-6 flex flex-col gap-1.5">
                 <li>
                   <Link
-                    href="/dashboard/news/create"
+                    href="/news/create"
                     onClick={() => setSidebarOpen(false)} // ★★★ onClick যোগ করা হয়েছে ★★★
                     className={`group relative flex items-center gap-2.5 rounded-md py-2 px-4 font-medium text-gray-600 duration-300 ease-in-out hover:bg-gray-100 ${
-                      pathname.includes('/dashboard/news/create') && 'bg-purple-50 text-purple-600'
+                      pathname.includes('/news/create') && 'bg-purple-50 text-purple-600'
                     }`}
                   >
                     <FilePlus size={18} />
@@ -158,10 +158,10 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 </li>
                 <li>
                   <Link
-                    href="/dashboard/news"
+                    href="/news"
                     onClick={() => setSidebarOpen(false)} // ★★★ onClick যোগ করা হয়েছে ★★★
                     className={`group relative flex items-center gap-2.5 rounded-md py-2 px-4 font-medium text-gray-600 duration-300 ease-in-out hover:bg-gray-100 ${
-                      pathname === '/dashboard/news' && 'bg-purple-50 text-purple-600'
+                      pathname === '/news' && 'bg-purple-50 text-purple-600'
                     }`}
                   >
                     <Newspaper size={18} />
@@ -175,6 +175,16 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
             <div>
               <h3 className="mb-4 ml-4 text-sm font-semibold text-gray-500">OTHERS</h3>
               <ul className="mb-6 flex flex-col gap-1.5">
+                <li>
+                  <Link
+                    href="/"
+                    onClick={() => setSidebarOpen(false)} // ★★★ onClick যোগ করা হয়েছে ★★★
+                    className="group relative flex items-center gap-2.5 rounded-md py-2 px-4 font-medium text-gray-600 duration-300 ease-in-out hover:bg-gray-100"
+                  >
+                    <Home size={18} />
+                    Home
+                  </Link>
+                </li>
                 <li>
                   <Link
                     href="#"

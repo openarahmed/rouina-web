@@ -2,19 +2,25 @@
 
 import React, { useState } from 'react';
 import { Plus, Minus } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 // FAQ Item Component
 function FaqItem({ faq, index, activeIndex, toggleFaq }) {
   const isOpen = index === activeIndex;
 
   return (
-    <div className="border-b border-gray-200 py-6">
+    // ★★★ SPACING REDUCED HERE ★★★
+    <div className="border-b border-[#6d46c1]/30 py-4">
       <button
         onClick={() => toggleFaq(index)}
-        className="w-full flex justify-between items-center text-left focus:outline-none"
+        className="w-full flex justify-between items-start text-left focus:outline-none"
       >
-        <span className="text-lg font-medium text-gray-900">{faq.question}</span>
-        <span className="text-gray-600">
+        <span className={`text-lg font-medium transition-colors duration-300 ${
+          isOpen ? 'text-[#6D46C1]' : 'text-gray-200'
+        }`}>
+          {faq.question}
+        </span>
+        <span className="text-[#6D46C1] flex-shrink-0 ml-4">
           {isOpen ? (
             <Minus className="h-6 w-6" />
           ) : (
@@ -22,15 +28,24 @@ function FaqItem({ faq, index, activeIndex, toggleFaq }) {
           )}
         </span>
       </button>
-      <div
-        className={`grid overflow-hidden transition-all duration-300 ease-in-out ${
-          isOpen ? 'grid-rows-[1fr] opacity-100 mt-4' : 'grid-rows-[0fr] opacity-0'
-        }`}
-      >
-        <div className="overflow-hidden">
-          <p className="text-gray-600">{faq.answer}</p>
-        </div>
-      </div>
+
+      <AnimatePresence initial={false}>
+        {isOpen && (
+            <motion.div
+                key="content"
+                initial="collapsed"
+                animate="open"
+                exit="collapsed"
+                variants={{
+                    open: { opacity: 1, height: 'auto', marginTop: '16px' },
+                    collapsed: { opacity: 0, height: 0, marginTop: '0px' },
+                }}
+                transition={{ duration: 0.4, ease: [0.04, 0.62, 0.23, 0.98] }}
+            >
+                <p className="text-gray-400 pr-8">{faq.answer}</p>
+            </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
@@ -87,12 +102,13 @@ export default function FaqSection() {
   ];
 
   return (
-    <section className="bg-white text-gray-900 py-16 sm:py-24 px-4 sm:px-6 lg:px-8">
+    // ★★★ BACKGROUND COLOR CHANGED HERE ★★★
+    <section id="faq" className="bg-black text-white py-16 sm:py-24 px-4 sm:px-6 lg:px-8">
       <div className="max-w-3xl mx-auto">
-        <h2 className="text-3xl sm:text-4xl font-bold text-center text-gray-900 mb-12">
-          Frequently Asked Questions
+        <h2 className="text-3xl sm:text-4xl font-bold text-center text-white mb-12">
+          Frequently Asked <span style={{ color: '#6D46C1' }}>Questions</span>
         </h2>
-        <div className="space-y-4">
+        <div>
           {faqs.map((faq, index) => (
             <FaqItem 
               key={index} 
@@ -107,4 +123,3 @@ export default function FaqSection() {
     </section>
   );
 }
-
