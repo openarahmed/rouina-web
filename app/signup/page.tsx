@@ -3,9 +3,12 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { doc, setDoc } from "firebase/firestore";
+import { doc, setDoc, Timestamp } from "firebase/firestore";
 import { auth, db } from '../lib/firebaseConfig';
 import Link from 'next/link';
+// 1. next/image থেকে Image component import করা হয়েছে
+import Image from 'next/image';
+import { FirebaseError } from 'firebase/app';
 
 // আইকন কম্পোনেন্টগুলো এখানে তৈরি করা হলো
 const MailIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>;
@@ -14,7 +17,6 @@ const LockIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="20" height
 const EyeIcon = ({ off }: { off?: boolean }) => off ? <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg> : <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>;
 const ChevronDownIcon = ({ open }: { open?: boolean }) => <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={`transition-transform duration-300 ${open ? 'rotate-180' : ''}`}><polyline points="6 9 12 15 18 9"></polyline></svg>;
 const CheckboxIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>;
-
 
 // ড্রপডাউনের জন্য ডেটা
 const departmentItems = [
@@ -33,6 +35,20 @@ const sectionItems = [
     ...'ABCDEFGHIJ'.split('').map(char => ({ label: `Section ${char}`, value: char }))
 ];
 
+// 2. User Data এর জন্য একটি interface তৈরি করা হয়েছে
+interface UserData {
+    uid: string;
+    name: string;
+    email: string;
+    userType: 'normal' | 'student';
+    role: 'user';
+    createdAt: Timestamp;
+    profileImageUrl: string | null;
+    studentId?: string;
+    departmentId?: string;
+    semester?: string;
+    section?: string;
+}
 
 export default function SignUpPage() {
     const [name, setName] = useState('');
@@ -72,25 +88,32 @@ export default function SignUpPage() {
             const userCredential = await createUserWithEmailAndPassword(auth, email, password);
             const user = userCredential.user;
 
-            let userData: any = { 
+            const userData: UserData = { 
                 uid: user.uid, 
                 name, 
                 email, 
                 userType, 
                 role: 'user', // নতুন ব্যবহারকারীর ডিফল্ট Role
-                createdAt: new Date(), 
+                createdAt: Timestamp.fromDate(new Date()), 
                 profileImageUrl: null 
             };
 
             if (userType === 'student') {
-                userData = { ...userData, studentId, departmentId, semester, section };
+                userData.studentId = studentId;
+                userData.departmentId = departmentId;
+                userData.semester = semester;
+                userData.section = section;
             }
 
             await setDoc(doc(db, "users", user.uid), userData);
-            router.push('/login'); // অ্যাডমিন প্যানেলে সরাসরি না পাঠিয়ে লগইন পেজে পাঠানো হলো
-        } catch (err: any) {
-            if (err.code === 'auth/email-already-in-use') { setError('This email is already in use.'); } 
-            else { setError('Failed to create an account. Please try again.'); }
+            router.push('/login'); // অ্যাডমিন প্যানেলে সরাসরি না পাঠিয়ে লগইন পেজে পাঠানো হলো
+        // 3. 'any' type এর পরিবর্তে FirebaseError ব্যবহার করা হয়েছে
+        } catch (err) {
+            if (err instanceof FirebaseError && err.code === 'auth/email-already-in-use') {
+                setError('This email is already in use.');
+            } else {
+                setError('Failed to create an account. Please try again.');
+            }
         } finally {
             setLoading(false);
         }
@@ -100,8 +123,15 @@ export default function SignUpPage() {
         <div className="flex flex-col items-center justify-center min-h-screen bg-white px-6">
             <div className="w-full max-w-sm">
                 <div className="text-center mb-8">
-                    {/* Logo */}
-                    <img src="https://i.ibb.co/Nny0XrCt/logo.png" alt="Routina Logo" className="w-24 h-24 mx-auto mb-4" onError={(e) => { e.currentTarget.src = 'https://placehold.co/96x96/e9e3f8/6d46c1?text=Logo' }}/>
+                    {/* 4. <img> এর পরিবর্তে <Image> component ব্যবহার করা হয়েছে */}
+                    <Image
+                        src="https://i.ibb.co/Nny0XrCt/logo.png"
+                        alt="Routina Logo"
+                        width={96}
+                        height={96}
+                        className="mx-auto mb-4"
+                        priority
+                    />
                     <h1 className="text-3xl font-bold text-gray-800">Create your account</h1>
                 </div>
 
@@ -170,4 +200,3 @@ export default function SignUpPage() {
         </div>
     );
 }
-

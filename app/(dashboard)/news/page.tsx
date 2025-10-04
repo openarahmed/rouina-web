@@ -3,17 +3,19 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { db } from '../../lib/firebaseConfig';
 import { collection, onSnapshot, query, orderBy, Timestamp, doc, deleteDoc, updateDoc } from 'firebase/firestore';
+// ★★★ FIX: Imported Next.js Image component ★★★
+import Image from 'next/image';
 import { MoreVertical, Edit, Trash2, Heart, MessageCircle, X, AlertTriangle, Newspaper } from 'lucide-react';
 import toast, { Toaster } from 'react-hot-toast';
 
 // --- Type Definitions ---
 interface Post {
-  id: string;
-  caption: string;
-  postImage: string;
-  createdAt?: Timestamp; // Optional for data safety
-  likes: number;
-  comments: number;
+    id: string;
+    caption: string;
+    postImage: string;
+    createdAt?: Timestamp; // Optional for data safety
+    likes: number;
+    comments: number;
 }
 
 // Skeleton loader for Post Cards
@@ -56,16 +58,17 @@ const PostCard = ({ post, onDelete, onEdit }: { post: Post, onDelete: (id: strin
     return (
         <div className="bg-white rounded-xl shadow-sm border border-slate-200 flex flex-col transition-shadow hover:shadow-lg">
             <div className="relative w-full h-48 rounded-t-xl overflow-hidden">
-                <img 
-                    src={post.postImage || 'https://placehold.co/600x400/f1f5f9/cbd5e1?text=No+Image'} 
-                    alt="Post image" 
-                    className="w-full h-full object-cover bg-slate-100"
+                {/* ★★★ FIX: Replaced <img> with Next.js <Image> component ★★★ */}
+                <Image
+                    src={post.postImage || 'https://placehold.co/600x400/f1f5f9/cbd5e1?text=No+Image'}
+                    alt="Post image"
+                    layout="fill"
+                    className="object-cover bg-slate-100"
                     onError={(e) => { e.currentTarget.src = 'https://placehold.co/600x400/f1f5f9/cbd5e1?text=Error'; }}
                 />
             </div>
             <div className="p-4 flex flex-col flex-grow">
                 <div className="flex-grow">
-                    {/* ★★★ FIX: Using line-clamp-2 to show exactly 2 lines of text ★★★ */}
                     <p className="text-slate-700 leading-relaxed text-sm mb-3 line-clamp-2">
                         {post.caption}
                     </p>
@@ -168,107 +171,107 @@ const ConfirmationModal = ({ isOpen, onClose, onConfirm, title, message }: { isO
 
 
 const AllNewsPage = () => {
-  const [posts, setPosts] = useState<Post[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [isEditModalOpen, setEditModalOpen] = useState(false);
-  const [editingPost, setEditingPost] = useState<Post | null>(null);
-  const [isConfirmModalOpen, setConfirmModalOpen] = useState(false);
-  const [postToDelete, setPostToDelete] = useState<string | null>(null);
+    const [posts, setPosts] = useState<Post[]>([]);
+    const [loading, setLoading] = useState<boolean>(true);
+    const [isEditModalOpen, setEditModalOpen] = useState(false);
+    const [editingPost, setEditingPost] = useState<Post | null>(null);
+    const [isConfirmModalOpen, setConfirmModalOpen] = useState(false);
+    const [postToDelete, setPostToDelete] = useState<string | null>(null);
 
-  useEffect(() => {
-    const newsCollectionRef = collection(db, 'newsAndEvents');
-    const q = query(newsCollectionRef, orderBy('createdAt', 'desc'));
-    const unsubscribe = onSnapshot(q, (querySnapshot) => {
-      const allPosts: Post[] = [];
-      querySnapshot.forEach((doc) => { allPosts.push({ id: doc.id, ...doc.data() } as Post); });
-      setPosts(allPosts);
-      setLoading(false);
-    }, (error) => { console.error("Error fetching posts: ", error); setLoading(false); });
-    return () => unsubscribe();
-  }, []);
+    useEffect(() => {
+        const newsCollectionRef = collection(db, 'newsAndEvents');
+        const q = query(newsCollectionRef, orderBy('createdAt', 'desc'));
+        const unsubscribe = onSnapshot(q, (querySnapshot) => {
+            const allPosts: Post[] = [];
+            querySnapshot.forEach((doc) => { allPosts.push({ id: doc.id, ...doc.data() } as Post); });
+            setPosts(allPosts);
+            setLoading(false);
+        }, (error) => { console.error("Error fetching posts: ", error); setLoading(false); });
+        return () => unsubscribe();
+    }, []);
 
-  const handleDeletePost = (id: string) => {
-      setPostToDelete(id);
-      setConfirmModalOpen(true);
-  };
+    const handleDeletePost = (id: string) => {
+        setPostToDelete(id);
+        setConfirmModalOpen(true);
+    };
 
-  const confirmDelete = async () => {
-    if (postToDelete) {
-        try {
-            await deleteDoc(doc(db, "newsAndEvents", postToDelete));
-            toast.success("Post deleted successfully!");
-        } catch (error) {
-            console.error("Error deleting post: ", error);
-            toast.error("Failed to delete post.");
-        } finally {
-            setConfirmModalOpen(false);
-            setPostToDelete(null);
+    const confirmDelete = async () => {
+        if (postToDelete) {
+            try {
+                await deleteDoc(doc(db, "newsAndEvents", postToDelete));
+                toast.success("Post deleted successfully!");
+            } catch (error) {
+                console.error("Error deleting post: ", error);
+                toast.error("Failed to delete post.");
+            } finally {
+                setConfirmModalOpen(false);
+                setPostToDelete(null);
+            }
         }
-    }
-  };
+    };
 
-  const handleEditPost = (post: Post) => {
-      setEditingPost(post);
-      setEditModalOpen(true);
-  };
-  
-  const handleUpdatePost = async (id: string, data: { caption: string, postImage: string }) => {
-      const postRef = doc(db, "newsAndEvents", id);
-      try {
-          await updateDoc(postRef, data);
-          toast.success("Post updated successfully!");
-          setEditModalOpen(false);
-          setEditingPost(null);
-      } catch (error) {
-          console.error("Error updating post: ", error);
-          toast.error("Failed to update post.");
-      }
-  };
+    const handleEditPost = (post: Post) => {
+        setEditingPost(post);
+        setEditModalOpen(true);
+    };
+    
+    const handleUpdatePost = async (id: string, data: { caption: string, postImage: string }) => {
+        const postRef = doc(db, "newsAndEvents", id);
+        try {
+            await updateDoc(postRef, data);
+            toast.success("Post updated successfully!");
+            setEditModalOpen(false);
+            setEditingPost(null);
+        } catch (error) {
+            console.error("Error updating post: ", error);
+            toast.error("Failed to update post.");
+        }
+    };
 
-  return (
-    <>
-      <Toaster position="top-right" reverseOrder={false} />
+    return (
+        <>
+            <Toaster position="top-right" reverseOrder={false} />
 
-        <div className="w-full">
-            <div className="mb-8">
-                <h1 className="text-3xl font-bold text-[#4c0e4c]">All News & Events</h1>
-                <p className="text-slate-500 mt-1">Manage all published posts.</p>
-            </div>
-
-            <div className="bg-white p-4 sm:p-6 rounded-xl shadow-sm border border-slate-200">
-                {loading ? (
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                        {[...Array(4)].map((_, i) => <PostCardSkeleton key={i} />)}
+                <div className="w-full">
+                    <div className="mb-8">
+                        <h1 className="text-3xl font-bold text-[#4c0e4c]">All News & Events</h1>
+                        <p className="text-slate-500 mt-1">Manage all published posts.</p>
                     </div>
-                ) 
-                : posts.length === 0 ? (
-                    <div className="text-center py-16">
-                        <Newspaper size={48} className="mx-auto text-slate-300" />
-                        <h3 className="mt-4 text-lg font-semibold text-slate-700">No Posts Yet</h3>
-                        <p className="mt-1 text-slate-500">Create a new post to get started.</p>
-                    </div>
-                ) 
-                : (
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                        {posts.map(post => (
-                            <PostCard key={post.id} post={post} onDelete={handleDeletePost} onEdit={handleEditPost} />
-                        ))}
-                    </div>
-                )}
-            </div>
-        </div>
 
-      <EditPostModal isOpen={isEditModalOpen} post={editingPost} onClose={() => setEditModalOpen(false)} onSave={handleUpdatePost} />
-      
-      <ConfirmationModal 
-        isOpen={isConfirmModalOpen}
-        onClose={() => setConfirmModalOpen(false)}
-        onConfirm={confirmDelete}
-        title="Delete Post"
-        message="Are you sure you want to delete this post? This action is permanent and cannot be undone."
-      />
-    </>
-  );
+                    <div className="bg-white p-4 sm:p-6 rounded-xl shadow-sm border border-slate-200">
+                        {loading ? (
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                                {[...Array(4)].map((_, i) => <PostCardSkeleton key={i} />)}
+                            </div>
+                        ) 
+                        : posts.length === 0 ? (
+                            <div className="text-center py-16">
+                                <Newspaper size={48} className="mx-auto text-slate-300" />
+                                <h3 className="mt-4 text-lg font-semibold text-slate-700">No Posts Yet</h3>
+                                <p className="mt-1 text-slate-500">Create a new post to get started.</p>
+                            </div>
+                        ) 
+                        : (
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                                {posts.map(post => (
+                                    <PostCard key={post.id} post={post} onDelete={handleDeletePost} onEdit={handleEditPost} />
+                                ))}
+                            </div>
+                        )}
+                    </div>
+                </div>
+
+            <EditPostModal isOpen={isEditModalOpen} post={editingPost} onClose={() => setEditModalOpen(false)} onSave={handleUpdatePost} />
+            
+            <ConfirmationModal 
+                isOpen={isConfirmModalOpen}
+                onClose={() => setConfirmModalOpen(false)}
+                onConfirm={confirmDelete}
+                title="Delete Post"
+                message="Are you sure you want to delete this post? This action is permanent and cannot be undone."
+            />
+        </>
+    );
 };
 
 export default AllNewsPage;

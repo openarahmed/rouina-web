@@ -3,23 +3,25 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { db } from '../../lib/firebaseConfig';
 import { collection, onSnapshot, query, orderBy, Timestamp, doc, deleteDoc, updateDoc } from 'firebase/firestore';
+// ★★★ FIX: Imported Next.js Image component ★★★
+import Image from 'next/image';
 import { MoreVertical, Edit, Trash2, X, AlertTriangle, Lightbulb, ChevronDown, Check } from 'lucide-react';
 import toast, { Toaster } from 'react-hot-toast';
 
 // --- Type Definitions ---
 interface Tip {
-  id: string;
-  title: string;
-  author: string;
-  category: string;
-  contentType: string;
-  thumbnailUrl: string;
-  excerpt: string;
-  content: string;
-  publishedAt?: Timestamp;
+    id: string;
+    title: string;
+    author: string;
+    category: string;
+    contentType: string;
+    thumbnailUrl: string;
+    excerpt: string;
+    content: string;
+    publishedAt?: Timestamp;
 }
 
-// ★★★ NEW: Skeleton loader for Tip Cards ★★★
+// Skeleton loader for Tip Cards
 const TipCardSkeleton = () => (
     <div className="bg-white rounded-xl shadow-sm border border-slate-200 flex flex-col animate-pulse">
         <div className="w-full h-40 bg-slate-200 rounded-t-xl"></div>
@@ -75,7 +77,8 @@ const TipCard = ({ tip, onDelete, onEdit }: { tip: Tip, onDelete: (id: string) =
     return (
         <div className="bg-white rounded-xl shadow-sm border border-slate-200 flex flex-col transition-shadow hover:shadow-lg">
             <div className="relative w-full h-40 rounded-t-xl overflow-hidden">
-                <img src={tip.thumbnailUrl} alt={tip.title} className="w-full h-full object-cover bg-slate-100" onError={(e) => { e.currentTarget.src = 'https://placehold.co/600x400/f1f5f9/cbd5e1?text=Error'; }} />
+                {/* ★★★ FIX: Replaced <img> with Next.js <Image> component ★★★ */}
+                <Image src={tip.thumbnailUrl} alt={tip.title} layout="fill" className="object-cover bg-slate-100" onError={(e) => { e.currentTarget.src = 'https://placehold.co/600x400/f1f5f9/cbd5e1?text=Error'; }} />
             </div>
             <div className="p-4 flex flex-col flex-grow">
                 <div>
@@ -168,64 +171,66 @@ const ConfirmationModal = ({ isOpen, onClose, onConfirm, title, message }: { isO
 
 // --- Main Page Component ---
 const AllTipsPage = () => {
-  const [tips, setTips] = useState<Tip[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [isEditModalOpen, setEditModalOpen] = useState(false);
-  const [editingTip, setEditingTip] = useState<Tip | null>(null);
-  const [isConfirmModalOpen, setConfirmModalOpen] = useState(false);
-  const [tipToDelete, setTipToDelete] = useState<string | null>(null);
+    const [tips, setTips] = useState<Tip[]>([]);
+    const [loading, setLoading] = useState<boolean>(true);
+    const [isEditModalOpen, setEditModalOpen] = useState(false);
+    const [editingTip, setEditingTip] = useState<Tip | null>(null);
+    const [isConfirmModalOpen, setConfirmModalOpen] = useState(false);
+    const [tipToDelete, setTipToDelete] = useState<string | null>(null);
 
-  useEffect(() => {
-    const tipsCollectionRef = collection(db, 'tips');
-    const q = query(tipsCollectionRef, orderBy('publishedAt', 'desc'));
-    const unsubscribe = onSnapshot(q, (querySnapshot) => {
-      const allTips: Tip[] = [];
-      querySnapshot.forEach((doc) => { allTips.push({ id: doc.id, ...doc.data() } as Tip); });
-      setTips(allTips);
-      setLoading(false);
-    }, (error) => { console.error("Error fetching tips: ", error); setLoading(false); });
-    return () => unsubscribe();
-  }, []);
+    useEffect(() => {
+        const tipsCollectionRef = collection(db, 'tips');
+        const q = query(tipsCollectionRef, orderBy('publishedAt', 'desc'));
+        const unsubscribe = onSnapshot(q, (querySnapshot) => {
+            const allTips: Tip[] = [];
+            querySnapshot.forEach((doc) => { allTips.push({ id: doc.id, ...doc.data() } as Tip); });
+            setTips(allTips);
+            setLoading(false);
+        }, (error) => { console.error("Error fetching tips: ", error); setLoading(false); });
+        return () => unsubscribe();
+    }, []);
 
-  const handleDeleteTip = (id: string) => { setTipToDelete(id); setConfirmModalOpen(true); };
-  const confirmDelete = async () => { if (tipToDelete) { const toastId = toast.loading('Deleting tip...'); try { await deleteDoc(doc(db, "tips", tipToDelete)); toast.success("Tip deleted!", { id: toastId }); } catch (error) { toast.error("Failed to delete tip.", { id: toastId }); } finally { setConfirmModalOpen(false); setTipToDelete(null); } } };
-  const handleEditTip = (tip: Tip) => { setEditingTip(tip); setEditModalOpen(true); };
-  const handleUpdateTip = async (id: string, data: Partial<Tip>) => { const tipRef = doc(db, "tips", id); const toastId = toast.loading('Updating tip...'); try { await updateDoc(tipRef, data); toast.success("Tip updated!", { id: toastId }); setEditModalOpen(false); setEditingTip(null); } catch (error) { toast.error("Failed to update tip.", { id: toastId }); } };
+    const handleDeleteTip = (id: string) => { setTipToDelete(id); setConfirmModalOpen(true); };
+    // ★★★ FIX: Removed unused 'error' variable ★★★
+    const confirmDelete = async () => { if (tipToDelete) { const toastId = toast.loading('Deleting tip...'); try { await deleteDoc(doc(db, "tips", tipToDelete)); toast.success("Tip deleted!", { id: toastId }); } catch { toast.error("Failed to delete tip.", { id: toastId }); } finally { setConfirmModalOpen(false); setTipToDelete(null); } } };
+    const handleEditTip = (tip: Tip) => { setEditingTip(tip); setEditModalOpen(true); };
+    // ★★★ FIX: Removed unused 'error' variable ★★★
+    const handleUpdateTip = async (id: string, data: Partial<Tip>) => { const tipRef = doc(db, "tips", id); const toastId = toast.loading('Updating tip...'); try { await updateDoc(tipRef, data); toast.success("Tip updated!", { id: toastId }); setEditModalOpen(false); setEditingTip(null); } catch { toast.error("Failed to update tip.", { id: toastId }); } };
 
-  return (
-    <>
-      <Toaster position="top-right" reverseOrder={false} />
-        <div className="w-full">
-            <div className="mb-8">
-                <h1 className="text-3xl font-bold text-[#4c0e4c]">All Tips & Articles</h1>
-                <p className="text-slate-500 mt-1">Manage all published tips and articles.</p>
-            </div>
-            <div className="bg-white p-4 sm:p-6 rounded-xl shadow-sm border border-slate-200">
-                {loading ? (
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {[...Array(3)].map((_, i) => <TipCardSkeleton key={i} />)}
+    return (
+        <>
+            <Toaster position="top-right" reverseOrder={false} />
+                <div className="w-full">
+                    <div className="mb-8">
+                        <h1 className="text-3xl font-bold text-[#4c0e4c]">All Tips & Articles</h1>
+                        <p className="text-slate-500 mt-1">Manage all published tips and articles.</p>
                     </div>
-                ) 
-                : tips.length === 0 ? (
-                    <div className="text-center py-16">
-                        <Lightbulb size={48} className="mx-auto text-slate-300" />
-                        <h3 className="mt-4 text-lg font-semibold text-slate-700">No Tips Yet</h3>
-                        <p className="mt-1 text-slate-500">Create a new tip to get started.</p>
+                    <div className="bg-white p-4 sm:p-6 rounded-xl shadow-sm border border-slate-200">
+                        {loading ? (
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                {[...Array(3)].map((_, i) => <TipCardSkeleton key={i} />)}
+                            </div>
+                        ) 
+                        : tips.length === 0 ? (
+                            <div className="text-center py-16">
+                                <Lightbulb size={48} className="mx-auto text-slate-300" />
+                                <h3 className="mt-4 text-lg font-semibold text-slate-700">No Tips Yet</h3>
+                                <p className="mt-1 text-slate-500">Create a new tip to get started.</p>
+                            </div>
+                        ) 
+                        : (
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                {tips.map(tip => (
+                                    <TipCard key={tip.id} tip={tip} onDelete={handleDeleteTip} onEdit={handleEditTip} />
+                                ))}
+                            </div>
+                        )}
                     </div>
-                ) 
-                : (
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {tips.map(tip => (
-                            <TipCard key={tip.id} tip={tip} onDelete={handleDeleteTip} onEdit={handleEditTip} />
-                        ))}
-                    </div>
-                )}
-            </div>
-        </div>
-      <EditTipModal isOpen={isEditModalOpen} tip={editingTip} onClose={() => setEditModalOpen(false)} onSave={handleUpdateTip} />
-      <ConfirmationModal isOpen={isConfirmModalOpen} onClose={() => setConfirmModalOpen(false)} onConfirm={confirmDelete} title="Delete Tip" message="Are you sure you want to delete this tip? This action is permanent." />
-    </>
-  );
+                </div>
+            <EditTipModal isOpen={isEditModalOpen} tip={editingTip} onClose={() => setEditModalOpen(false)} onSave={handleUpdateTip} />
+            <ConfirmationModal isOpen={isConfirmModalOpen} onClose={() => setConfirmModalOpen(false)} onConfirm={confirmDelete} title="Delete Tip" message="Are you sure you want to delete this tip? This action is permanent." />
+        </>
+    );
 };
 
 export default AllTipsPage;

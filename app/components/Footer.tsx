@@ -1,4 +1,9 @@
+'use client';
+
 import { Twitter, Instagram, Facebook, Linkedin } from 'lucide-react';
+// ★★★ FIX: Importing Link and Image from Next.js ★★★
+import Link from 'next/link';
+import Image from 'next/image';
 
 const SocialLink = ({ href, icon: Icon }: { href: string; icon: React.ElementType }) => (
   <a 
@@ -24,24 +29,28 @@ export default function Footer() {
           
           {/* Left Side: Branding and QR Code */}
           <div className="lg:col-span-4 flex flex-col items-center lg:items-start text-center lg:text-left">
-            <a href="/" className="flex items-center space-x-3 mb-4">
+            {/* ★★★ FIX: Replaced <a> with <Link> for internal navigation ★★★ */}
+            <Link href="/" className="flex items-center space-x-3 mb-4">
               <div className='bg-white/10 p-1 rounded-lg'>
-                  <img
-                    className="h-10 w-auto"
+                  {/* ★★★ FIX: Replaced <img> with <Image> for optimization ★★★ */}
+                  <Image
                     src="https://i.ibb.co/Nny0XrCt/logo.png"
                     alt="Routina Logo"
+                    width={40}
+                    height={40}
                   />
               </div>
               <span className="font-bold text-2xl text-[#F3F4F6]">Routina</span>
-            </a>
+            </Link>
             <p className="mt-2 max-w-xs">
               Start building your habits today. Get the app now!
             </p>
             <div className="mt-6 bg-white p-3 rounded-lg shadow-md border border-gray-200 hidden lg:block">
-              <img
-                className="h-24 w-24"
+              <Image
                 src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${appUrl}`}
                 alt="QR Code to download the app"
+                width={96}
+                height={96}
               />
             </div>
           </div>
@@ -58,10 +67,10 @@ export default function Footer() {
             
             <div className="mt-8 flex flex-col sm:flex-row items-center gap-4">
               <a href="#download-ios" className="transform hover:scale-105 transition-transform">
-                <img className="h-15 w-auto" src="https://tools.applemediaservices.com/api/badges/download-on-the-app-store/black/en-us?size=250x83&amp;releaseDate=1276560000" alt="Download on the App Store" />
+                <Image width={180} height={60} src="https://tools.applemediaservices.com/api/badges/download-on-the-app-store/black/en-us?size=250x83&amp;releaseDate=1276560000" alt="Download on the App Store" />
               </a>
               <a href="#download-android" className="transform hover:scale-105 transition-transform">
-                <img className="h-22 w-auto" src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" alt="Get it on Google Play" />
+                <Image width={180} height={53} src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" alt="Get it on Google Play" />
               </a>
             </div>
               <p className="mt-8 text-base max-w-lg">
@@ -75,11 +84,12 @@ export default function Footer() {
                 Company
               </h3>
               <ul className="mt-4 space-y-3">
-                <li><a href="/about" className="text-base hover:text-[#6D46C1]">About Us</a></li>
-                <li><a href="/blog" className="text-base hover:text-[#6D46C1]">Blog</a></li>
-                <li><a href="/contact" className="text-base hover:text-[#6D46C1]">Contact</a></li>
-                <li><a href="/terms" className="text-base hover:text-[#6D46C1]">Terms of Service</a></li>
-                <li><a href="/privacy" className="text-base hover:text-[#6D46C1]">Privacy Policy</a></li>
+                {/* ★★★ FIX: Replaced all <a> tags with <Link> for internal pages ★★★ */}
+                <li><Link href="/about" className="text-base hover:text-[#6D46C1]">About Us</Link></li>
+                <li><Link href="/blog" className="text-base hover:text-[#6D46C1]">Blog</Link></li>
+                <li><Link href="/contact" className="text-base hover:text-[#6D46C1]">Contact</Link></li>
+                <li><Link href="/terms" className="text-base hover:text-[#6D46C1]">Terms of Service</Link></li>
+                <li><Link href="/privacy" className="text-base hover:text-[#6D46C1]">Privacy Policy</Link></li>
               </ul>
           </div>
         </div>
@@ -100,4 +110,3 @@ export default function Footer() {
     </footer>
   );
 }
-

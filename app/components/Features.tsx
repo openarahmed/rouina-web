@@ -1,16 +1,13 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { motion, Variants } from 'framer-motion';
 import { 
     ListChecks, 
     BellRing, 
     BarChart3, 
     Sparkles, 
     Timer, 
-    HeartPulse,
     Lock,
-    Coins,
-    WifiOff
 } from 'lucide-react';
 
 const features = [
@@ -47,7 +44,8 @@ const features = [
     
 ];
 
-const cardVariants = {
+// ★★★ FIX: Added the 'Variants' type from framer-motion to resolve the type error ★★★
+const cardVariants: Variants = {
     hidden: { opacity: 0, y: 30 },
     visible: (i: number) => ({
         opacity: 1,
@@ -97,3 +95,4 @@ export default function FeaturesSection() {
         </section>
     );
 }
+

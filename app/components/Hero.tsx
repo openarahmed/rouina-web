@@ -2,28 +2,30 @@
 
 import Link from 'next/link';
 import { PlayCircle, Download } from 'lucide-react';
-import { motion } from 'framer-motion';
+// ★★★ FIX: Imported 'Variants' type from framer-motion ★★★
+import { motion, Variants } from 'framer-motion';
 import Image from 'next/image';
 
 const phoneMockups = [
-  { src: "/mockups/phone-1.png", position: "bottom-[-10%] sm:bottom-[-20%] left-1/2 -translate-x-1/2", rotation: "rotate-0", animationDelay: 0.1, },
-  { src: "/mockups/phone-2.png", position: "top-[15%] left-[-10%] sm:left-[-5%]", rotation: "-rotate-[25deg]", animationDelay: 0.3, },
-  { src: "/mockups/phone-3.png", position: "top-[15%] right-[-10%] sm:right-[-5%]", rotation: "rotate-[25deg]", animationDelay: 0.5, },
-  { src: "/mockups/phone-4.png", position: "bottom-[-5%] left-[5%] sm:left-[15%]", rotation: "rotate-[15deg]", animationDelay: 0.7, },
-  { src: "/mockups/phone-5.png", position: "bottom-[-5%] right-[5%] sm:right-[15%]", rotation: "-rotate-[15deg]", animationDelay: 0.9, },
+    { src: "/mockups/phone-1.png", position: "bottom-[-10%] sm:bottom-[-20%] left-1/2 -translate-x-1/2", rotation: "rotate-0", animationDelay: 0.1, },
+    { src: "/mockups/phone-2.png", position: "top-[15%] left-[-10%] sm:left-[-5%]", rotation: "-rotate-[25deg]", animationDelay: 0.3, },
+    { src: "/mockups/phone-3.png", position: "top-[15%] right-[-10%] sm:right-[-5%]", rotation: "rotate-[25deg]", animationDelay: 0.5, },
+    { src: "/mockups/phone-4.png", position: "bottom-[-5%] left-[5%] sm:left-[15%]", rotation: "rotate-[15deg]", animationDelay: 0.7, },
+    { src: "/mockups/phone-5.png", position: "bottom-[-5%] right-[5%] sm:right-[15%]", rotation: "-rotate-[15deg]", animationDelay: 0.9, },
 ];
 
-const floatingAnimation = {
-  float: (delay: number) => ({
-    y: ["-8px", "8px"],
-    transition: {
-      delay,
-      duration: 3,
-      repeat: Infinity,
-      repeatType: "reverse",
-      ease: "easeInOut",
-    },
-  }),
+// ★★★ FIX: Added the 'Variants' type to resolve the build error ★★★
+const floatingAnimation: Variants = {
+    float: (delay: number) => ({
+        y: ["-8px", "8px"],
+        transition: {
+            delay,
+            duration: 3,
+            repeat: Infinity,
+            repeatType: "reverse",
+            ease: "easeInOut",
+        },
+    }),
 };
 
 const LaurelIcon = () => (
@@ -34,83 +36,83 @@ const LaurelIcon = () => (
 
 
 export default function Hero() {
-  return (
-    <section className="relative bg-[#0D0915] min-h-screen flex flex-col items-center justify-center text-center py-24 sm:py-28 overflow-hidden">
-      
-      {/* Background Glow - Updated with primary color */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(109,_70,_193,_0.15),_transparent_70%)] -z-0"></div>
-      
-      {/* Text Content */}
-      <div className="container relative z-10 mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="max-w-4xl mx-auto">
-          
-          <div className="inline-flex items-center gap-x-2 text-[#9CA3AF] text-sm font-semibold mb-6">
-            <LaurelIcon />
-            <span>200K+ Active Installs</span>
-            <LaurelIcon />
-          </div>
+    return (
+        <section id="hero" className="relative bg-[#0D0915] min-h-screen flex flex-col items-center justify-center text-center py-24 sm:py-28 overflow-hidden">
+            
+            {/* Background Glow - Updated with primary color */}
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(109,_70,_193,_0.15),_transparent_70%)] -z-0"></div>
+            
+            {/* Text Content */}
+            <div className="container relative z-10 mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="max-w-4xl mx-auto">
+                    
+                    <div className="inline-flex items-center gap-x-2 text-[#9CA3AF] text-sm font-semibold mb-6">
+                        <LaurelIcon />
+                        <span>200K+ Active Installs</span>
+                        <LaurelIcon />
+                    </div>
 
-          <motion.h1 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-            className="text-4xl sm:text-6xl font-extrabold text-[#F3F4F6] tracking-tight"
-          >
-            Your path to <span className='text-[#6D46C1]'>getting things done</span>
-          </motion.h1>
+                    <motion.h1 
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.8, ease: "easeOut" }}
+                        className="text-4xl sm:text-6xl font-extrabold text-[#F3F4F6] tracking-tight"
+                    >
+                        Your path to <span className='text-[#6D46C1]'>getting things done</span>
+                    </motion.h1>
 
-          <motion.p 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-            className="mt-6 max-w-2xl mx-auto text-lg text-[#D1D5DB]"
-          >
-            Packed with powerful tools that are easy to use, Routina helps you stay productive without the overwhelm.
-          </motion.p>
+                    <motion.p 
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
+                        className="mt-6 max-w-2xl mx-auto text-lg text-[#D1D5DB]"
+                    >
+                        Packed with powerful tools that are easy to use, Routina helps you stay productive without the overwhelm.
+                    </motion.p>
 
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
-            className="mt-10 flex justify-center items-center gap-4 flex-wrap"
-          >
-            <Link
-              href="/signup"
-              className="inline-flex items-center justify-center px-7 py-3 gap-2 border border-transparent text-base font-semibold rounded-full text-white bg-[#6D46C1] hover:bg-[#8B5CF6] transition-all duration-300 transform hover:scale-105 shadow-lg shadow-[#6D46C1]/20"
-            >
-              <Download className="w-5 h-5" /> Download App
-            </Link>
-            <Link
-              href="#features"
-              className="inline-flex items-center justify-center px-7 py-3 gap-2 border border-[#2E284D] text-base font-semibold rounded-full text-[#F3F4F6] bg-white/5 hover:bg-white/10 backdrop-blur-sm transition-all duration-300 transform hover:scale-105 shadow-lg"
-            >
-              <PlayCircle className="w-5 h-5" /> Discover More
-            </Link>
-          </motion.div>
-        </div>
-      </div>
+                    <motion.div 
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
+                        className="mt-10 flex justify-center items-center gap-4 flex-wrap"
+                    >
+                        <Link
+                            href="/signup"
+                            className="inline-flex items-center justify-center px-7 py-3 gap-2 border border-transparent text-base font-semibold rounded-full text-white bg-[#6D46C1] hover:bg-[#8B5CF6] transition-all duration-300 transform hover:scale-105 shadow-lg shadow-[#6D46C1]/20"
+                        >
+                            <Download className="w-5 h-5" /> Download App
+                        </Link>
+                        <Link
+                            href="#features"
+                            className="inline-flex items-center justify-center px-7 py-3 gap-2 border border-[#2E284D] text-base font-semibold rounded-full text-[#F3F4F6] bg-white/5 hover:bg-white/10 backdrop-blur-sm transition-all duration-300 transform hover:scale-105 shadow-lg"
+                        >
+                            <PlayCircle className="w-5 h-5" /> Discover More
+                        </Link>
+                    </motion.div>
+                </div>
+            </div>
 
-      {/* Floating Phone Mockups */}
-      <div className="absolute inset-0 w-full h-full z-0">
-          {phoneMockups.map((phone, index) => (
-              <motion.div
-                  key={index}
-                  className={`absolute w-[150px] sm:w-[250px] ${phone.position} ${phone.rotation}`}
-                  custom={phone.animationDelay}
-                  variants={floatingAnimation}
-                  animate="float"
-              >
-                  <Image
-                      src={phone.src}
-                      alt={`Routina app mockup ${index + 1}`}
-                      width={250}
-                      height={500}
-                      className="object-contain"
-                      priority={index < 3}
-                  />
-              </motion.div>
-          ))}
-      </div>
-    </section>
-  );
+            {/* Floating Phone Mockups */}
+            <div className="absolute inset-0 w-full h-full z-0">
+                {phoneMockups.map((phone, index) => (
+                    <motion.div
+                        key={index}
+                        className={`absolute w-[150px] sm:w-[250px] ${phone.position} ${phone.rotation}`}
+                        custom={phone.animationDelay}
+                        variants={floatingAnimation}
+                        animate="float"
+                    >
+                        <Image
+                            src={phone.src}
+                            alt={`Routina app mockup ${index + 1}`}
+                            width={250}
+                            height={500}
+                            className="object-contain"
+                            priority={index < 3}
+                        />
+                    </motion.div>
+                ))}
+            </div>
+        </section>
+    );
 }
