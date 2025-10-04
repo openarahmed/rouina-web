@@ -1,26 +1,25 @@
 'use client';
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Plus, Minus } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 // FAQ Item Component
-function FaqItem({ faq, index, activeIndex, toggleFaq }) {
+function FaqItem({ faq, index, activeIndex, toggleFaq }: { faq: { question: string; answer: string }, index: number, activeIndex: number | null, toggleFaq: (index: number) => void }) {
   const isOpen = index === activeIndex;
 
   return (
-    // ★★★ SPACING REDUCED HERE ★★★
-    <div className="border-b border-[#6d46c1]/30 py-4">
+    <div className="border-b border-[#2E284D] py-4">
       <button
         onClick={() => toggleFaq(index)}
         className="w-full flex justify-between items-start text-left focus:outline-none"
       >
         <span className={`text-lg font-medium transition-colors duration-300 ${
-          isOpen ? 'text-[#6D46C1]' : 'text-gray-200'
+          isOpen ? 'text-[#6D46C1]' : 'text-[#D1D5DB]'
         }`}>
           {faq.question}
         </span>
-        <span className="text-[#6D46C1] flex-shrink-0 ml-4">
+        <span className="text-[#8B5CF6] flex-shrink-0 ml-4 mt-1">
           {isOpen ? (
             <Minus className="h-6 w-6" />
           ) : (
@@ -42,7 +41,7 @@ function FaqItem({ faq, index, activeIndex, toggleFaq }) {
                 }}
                 transition={{ duration: 0.4, ease: [0.04, 0.62, 0.23, 0.98] }}
             >
-                <p className="text-gray-400 pr-8">{faq.answer}</p>
+                <p className="text-[#9CA3AF] pr-8">{faq.answer}</p>
             </motion.div>
         )}
       </AnimatePresence>
@@ -52,9 +51,9 @@ function FaqItem({ faq, index, activeIndex, toggleFaq }) {
 
 // FAQ Section Component
 export default function FaqSection() {
-  const [activeIndex, setActiveIndex] = useState(null);
+  const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
-  const toggleFaq = (index) => {
+  const toggleFaq = (index: number) => {
     setActiveIndex(activeIndex === index ? null : index);
   };
 
@@ -91,22 +90,15 @@ export default function FaqSection() {
       question: "How does the 'curated job listings' feature work?",
       answer: "We aggregate relevant job postings from various top job portals and present them within the app. Our AI tailors the listings to your skills and preferences, saving you time and effort in your job search."
     },
-    {
-      question: "What is 'Personalized AI routine coaching'?",
-      answer: "This is a premium feature available on our Yearly plan. Our AI analyzes your progress and habits to provide personalized tips, motivation, and suggestions to help you stay on track and achieve your goals more effectively."
-    },
-    {
-      question: "Can I use the app on multiple devices?",
-      answer: "Yes, your account and data are synced across all your devices. Simply log in with the same account on your phone, tablet, or computer to access your routines and progress seamlessly."
-    }
+   
   ];
 
   return (
-    // ★★★ BACKGROUND COLOR CHANGED HERE ★★★
-    <section id="faq" className="bg-black text-white py-16 sm:py-24 px-4 sm:px-6 lg:px-8">
+    // Background updated to Surface color for visual separation
+    <section id="faq" className="bg-[#1A1429] text-white py-16 sm:py-24 px-4 sm:px-6 lg:px-8">
       <div className="max-w-3xl mx-auto">
-        <h2 className="text-3xl sm:text-4xl font-bold text-center text-white mb-12">
-          Frequently Asked <span style={{ color: '#6D46C1' }}>Questions</span>
+        <h2 className="text-3xl sm:text-4xl font-bold text-center text-[#F3F4F6] mb-12">
+          Frequently Asked <span className="text-[#6D46C1]">Questions</span>
         </h2>
         <div>
           {faqs.map((faq, index) => (
@@ -123,3 +115,4 @@ export default function FaqSection() {
     </section>
   );
 }
+

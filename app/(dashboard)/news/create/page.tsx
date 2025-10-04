@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 import { db } from '../../../lib/firebaseConfig';
-import { ImagePlus, Loader2 } from 'lucide-react';
+import { ImagePlus, Loader2, AlertTriangle } from 'lucide-react'; // Added AlertTriangle for errors
 
 const CreateNewsPage = () => {
   const [caption, setCaption] = useState('');
@@ -28,15 +28,14 @@ const CreateNewsPage = () => {
       await addDoc(newsCollectionRef, {
         caption: caption,
         postImage: imageUrl,
-        profileName: 'Department of English, NUB', // ডিফল্ট প্রোফাইল নাম
-        profileImage: 'https://scontent.fdac99-1.fna.fbcdn.net/v/t39.30808-6/503380562_122207281592129146_4254790902127134274_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=6ee11a&_nc_eui2=AeF9UABAq8JEwy6CMGYYSEmZvbG_wq8PRV29sb_Crw9FXZKlHxVy0qWKakH1nXNKE2aolNLUBYjKXXCKDNUD1zDg&_nc_ohc=gakhHA4KijwQ7kNvwEM88Dy&_nc_oc=AdkiY7KraoQkW2gz5U_lIgBSH6eeNlP59d2Eo7Zmd-kKviwEJLZFIMZGv8s5KV1Su1HAFQTSSc24O810N9BKQ_vG&_nc_zt=23&_nc_ht=scontent.fdac99-1.fna&_nc_gid=k34Ffu_gWdkH9lsKwUA63w&oh=00_AfbIDrwcih0MUEddTjYNZScfldhfdrp5YRPI0h8VJjq6sA&oe=68DE100B', // ডিফল্ট প্রোফাইল ছবি
+        profileName: 'Department of English, NUB', // Default profile name
+        profileImage: 'https://scontent.fdac99-1.fna.fbcdn.net/v/t39.30808-6/503380562_122207281592129146_4254790902127134274_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=6ee11a&_nc_eui2=AeF9UABAq8JEwy6CMGYYSEmZvbG_wq8PRV29sb_Crw9FXZKlHxVy0qWKakH1nXNKE2aolNLUBYjKXXCKDNUD1zDg&_nc_ohc=gakhHA4KijwQ7kNvwEM88Dy&_nc_oc=AdkiY7KraoQkW2gz5U_lIgBSH6eeNlP59d2Eo7Zmd-kKviwEJLZFIMZGv8s5KV1Su1HAFQTSSc24O810N9BKQ_vG&_nc_zt=23&_nc_ht=scontent.fdac99-1.fna&_nc_gid=k34Ffu_gWdkH9lsKwUA63w&oh=00_AfbIDrwcih0MUEddTjYNZScfldhfdrp5YRPI0h8VJjq6sA&oe=68DE100B', // Default profile image
         likes: 0,
         comments: 0,
         shares: 0,
-        createdAt: serverTimestamp(), // পোস্ট তৈরির সময়
+        createdAt: serverTimestamp(),
       });
       
-      // সফলভাবে পোস্ট হলে "All News & Events" পেজে পাঠিয়ে দেওয়া হবে
       router.push('/dashboard/news');
 
     } catch (err) {
@@ -48,68 +47,90 @@ const CreateNewsPage = () => {
   };
 
   return (
-    <div className="bg-white p-6 rounded-lg shadow-md border border-gray-200">
-      <h2 className="text-2xl font-bold text-gray-800 mb-6">Create a New Post</h2>
-      <form onSubmit={handleCreatePost}>
-        <div className="space-y-6">
-          {/* Caption Input */}
-          <div>
-            <label htmlFor="caption" className="block text-sm font-medium text-gray-700 mb-2">
-              Caption
-            </label>
-            <textarea
-              id="caption"
-              rows={6}
-              value={caption}
-              onChange={(e) => setCaption(e.target.value)}
-              placeholder="What's on your mind?"
-              className="w-full p-3 text-gray-700 bg-gray-50 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 border border-gray-200 transition"
-            />
-          </div>
+    // ★★★ PAGE LAYOUT UPDATE: Consistent header and card style ★★★
+    <div className="w-full">
+        <div className="mb-8">
+            <h1 className="text-3xl font-bold text-[#4c0e4c]">Create News Post</h1>
+            <p className="text-slate-500 mt-1">Compose and publish new content for news and events.</p>
+        </div>
 
-          {/* Image URL Input */}
-          <div>
-            <label htmlFor="imageUrl" className="block text-sm font-medium text-gray-700 mb-2">
-              Image URL
-            </label>
-            <input
-              id="imageUrl"
-              type="url"
-              value={imageUrl}
-              onChange={(e) => setImageUrl(e.target.value)}
-              placeholder="https://example.com/image.jpg"
-              className="w-full p-3 text-gray-700 bg-gray-50 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 border border-gray-200 transition"
-            />
-          </div>
-          
-          {/* Image Preview */}
-          {imageUrl && (
-             <div className="mt-4">
-                <p className="text-sm font-medium text-gray-700 mb-2">Image Preview:</p>
-                <div className="w-full h-64 relative rounded-lg overflow-hidden border border-gray-200">
-                     <img src={imageUrl} alt="Preview" className="w-full h-full object-cover" onError={(e) => e.currentTarget.style.display = 'none'} />
-                     <div className="absolute inset-0 flex items-center justify-center bg-gray-100 -z-10">
-                        <ImagePlus className="text-gray-400" size={48}/>
-                     </div>
+        <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+          <form onSubmit={handleCreatePost}>
+            <div className="space-y-6">
+              
+              {/* Caption Input */}
+              <div>
+                <label htmlFor="caption" className="block text-sm font-medium text-slate-700 mb-2">
+                  Caption
+                </label>
+                <textarea
+                  id="caption"
+                  rows={6}
+                  value={caption}
+                  onChange={(e) => setCaption(e.target.value)}
+                  placeholder="What's on your mind?"
+                  // ★★★ STYLE UPDATE: Branded focus ring and consistent colors ★★★
+                  className="w-full p-3 text-slate-800 bg-slate-50 rounded-md focus:outline-none focus:ring-2 focus:ring-[#6D46C1] border border-slate-200 transition"
+                />
+              </div>
+
+              {/* Image URL Input */}
+              <div>
+                <label htmlFor="imageUrl" className="block text-sm font-medium text-slate-700 mb-2">
+                  Image URL
+                </label>
+                <input
+                  id="imageUrl"
+                  type="url"
+                  value={imageUrl}
+                  onChange={(e) => setImageUrl(e.target.value)}
+                  placeholder="https://example.com/image.jpg"
+                  className="w-full p-3 text-slate-800 bg-slate-50 rounded-md focus:outline-none focus:ring-2 focus:ring-[#6D46C1] border border-slate-200 transition"
+                />
+              </div>
+              
+              {/* Image Preview */}
+              {imageUrl && (
+                 <div className="mt-4">
+                   <p className="text-sm font-medium text-slate-700 mb-2">Image Preview:</p>
+                   <div className="w-full h-64 relative rounded-lg overflow-hidden border border-slate-200 bg-slate-50">
+                       <img 
+                         src={imageUrl} 
+                         alt="Preview" 
+                         className="w-full h-full object-cover" 
+                         // This onError logic is great for handling bad URLs
+                         onError={(e) => {
+                            e.currentTarget.src = 'https://placehold.co/600x400/f1f5f9/cbd5e1?text=Invalid+Image';
+                            e.currentTarget.classList.add('object-contain');
+                         }}
+                       />
+                   </div>
+               </div>
+              )}
+
+              {/* ★★★ UX UPDATE: Enhanced error message display ★★★ */}
+              {error && (
+                <div className="flex items-center gap-2 text-sm text-red-600 bg-red-50 p-3 rounded-md">
+                    <AlertTriangle className="h-4 w-4" />
+                    <span>{error}</span>
                 </div>
+              )}
             </div>
-          )}
 
-          {error && <p className="text-sm text-red-500">{error}</p>}
+            {/* Submit Button */}
+            <div className="mt-8 flex justify-end">
+              <button
+                type="submit"
+                disabled={loading}
+                // ★★★ STYLE UPDATE: Branded button with consistent states ★★★
+                className="flex items-center justify-center px-6 py-3 font-semibold text-white bg-[#6D46C1] rounded-md hover:bg-[#5e3bad] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#6D46C1] disabled:bg-[#6D46C1]/50 disabled:cursor-not-allowed transition-colors"
+              >
+                {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                {loading ? 'Publishing...' : 'Publish Post'}
+              </button>
+            </div>
+          </form>
         </div>
-
-        {/* Submit Button */}
-        <div className="mt-8 flex justify-end">
-          <button
-            type="submit"
-            disabled={loading}
-            className="flex items-center justify-center px-6 py-3 font-bold text-white bg-purple-600 rounded-md hover:bg-purple-700 focus:outline-none disabled:bg-purple-400 transition-colors"
-          >
-            {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-            {loading ? 'Publishing...' : 'Publish Post'}
-          </button>
-        </div>
-      </form>
     </div>
   );
 };

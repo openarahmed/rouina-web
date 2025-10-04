@@ -1,56 +1,64 @@
-// File: app/components/Navbar.tsx
-
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { usePathname } from 'next/navigation';
 import { Menu, X, Download, LogOut, LayoutDashboard } from 'lucide-react';
 import Image from 'next/image';
 import NextLink from 'next/link';
-
-// STEP 1: Import your actual useAuth hook and Firebase functions
-import { useAuth } from '../context/AuthContext'; // Path thik kore nin
+// STEP 1: আপনার প্রোজেক্ট অনুযায়ী সঠিক পাথ ব্যবহার করুন
+import { useAuth } from '../context/AuthContext'; 
 import { signOut } from 'firebase/auth';
-import { auth } from '../lib/firebaseConfig'; // Path thik kore nin
+import { auth } from '../lib/firebaseConfig'; 
 
 export default function Navbar() {
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeLink, setActiveLink] = useState('/#hero');
-
-  // STEP 2: Use the real user state from your AuthContext
   const { user, initializing } = useAuth();
   const pathname = usePathname();
+
+  // Reference to store observer
+  const observer = useRef<IntersectionObserver | null>(null);
 
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
     };
-
-    // This observer updates the active link based on which section is visible
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setActiveLink(`/#${entry.target.id}`);
-          }
-        });
-      },
-      { rootMargin: '-40% 0px -60% 0px' } 
-    );
-
-    const sections = document.querySelectorAll('section[id]');
-    sections.forEach((section) => observer.observe(section));
+    window.addEventListener('scroll', handleScroll, { passive: true });
     
-    window.addEventListener('scroll', handleScroll);
+    // Cleanup previous observer
+    if (observer.current) {
+        observer.current.disconnect();
+    }
+
+    // শুধুমাত্র হোমপেজে IntersectionObserver সেট আপ করা হবে
+    if (pathname === '/') {
+        observer.current = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        setActiveLink(`/#${entry.target.id}`);
+                    }
+                });
+            },
+            { rootMargin: '-40% 0px -60% 0px' } 
+        );
+
+        const sections = document.querySelectorAll('section[id]');
+        sections.forEach((section) => observer.current?.observe(section));
+    } else {
+        // অন্য কোনো পেজে থাকলে, সেই পেজের পাথ-কেই অ্যাকটিভ লিঙ্ক হিসেবে সেট করা হবে
+        setActiveLink(pathname);
+    }
 
     return () => {
       window.removeEventListener('scroll', handleScroll);
-      sections.forEach((section) => observer.unobserve(section));
+      if (observer.current) {
+        observer.current.disconnect();
+      }
     };
-  }, []);
+  }, [pathname]); // pathname পরিবর্তন হলে Effect পুনরায় রান হবে
 
-  // STEP 3: Use the real Firebase sign-out function
   const handleSignOut = async () => {
     try {
       await signOut(auth);
@@ -59,42 +67,39 @@ export default function Navbar() {
     }
   };
   
-  // Custom smooth scrolling function
-  const handleLinkClick = (e, href) => {
+  const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     if (href.startsWith('/#')) {
       e.preventDefault();
       const sectionId = href.substring(2);
       const section = document.getElementById(sectionId);
       if (section) {
         window.scrollTo({
-          top: section.offsetTop - 80, // Offset for fixed navbar
+          top: section.offsetTop - 80, // Navbar এর উচ্চতার জন্য অফসেট
           behavior: 'smooth',
         });
         setActiveLink(href);
-        setMobileMenuOpen(false);
       }
     } else {
-      setActiveLink(href);
-      setMobileMenuOpen(false);
+        setActiveLink(href);
     }
+    setMobileMenuOpen(false);
   };
   
-  // Conditional Navigation Links
   const publicNavLinks = [
-    { name: 'Home', href: '/' },
+    { name: 'Home', href: '/#hero' },
     { name: 'Features', href: '/#features' },
+    { name: 'Testimonials', href: '/#testimonials' },
     { name: 'Pricing', href: '/#pricing' },
     { name: 'FAQs', href: '/#faq' },
   ];
 
   let navLinks = [...publicNavLinks];
-
+  // কাল্পনিক user role, আপনার সিস্টেম অনুযায়ী পরিবর্তন করুন
   if (user && (user.role === 'admin' || user.role === 'superadmin')) {
     navLinks.push({ name: 'Dashboard', href: '/dashboard' });
   }
 
-  // Helper component to handle different link types
-  const Link = ({ href, children, ...props }) => {
+  const Link = ({ href, children, ...props }: { href: string, children: React.ReactNode, [key: string]: any }) => {
     if (href.startsWith('/#')) {
       return <a href={href} {...props}>{children}</a>;
     }
@@ -104,7 +109,7 @@ export default function Navbar() {
   return (
     <header className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ease-in-out ${
         isScrolled 
-        ? 'bg-black/70 backdrop-blur-lg shadow-lg py-2' 
+        ? 'bg-[#0D0915]/80 backdrop-blur-lg shadow-lg py-2' 
         : 'bg-transparent pt-4'
     }`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -126,12 +131,12 @@ export default function Navbar() {
           <div className="hidden md:flex absolute inset-x-0 justify-center">
             <div className="flex items-center justify-center gap-x-2 bg-white/10 backdrop-blur-md p-1.5 rounded-full shadow-lg border border-white/10">
               {navLinks.map((link) => {
-                const isActive = (activeLink === link.href && pathname === '/') || pathname === link.href;
+                const isActive = activeLink === link.href;
                 return (
                   <Link
                     key={link.name} 
                     href={link.href}
-                    onClick={(e) => handleLinkClick(e, link.href)} 
+                    onClick={(e: React.MouseEvent<HTMLAnchorElement>) => handleLinkClick(e, link.href)} 
                     className={`px-4 py-1.5 rounded-full text-sm font-medium transition-colors duration-300 flex items-center gap-2 ${
                       isActive 
                       ? 'bg-[#6D46C1] text-white shadow-sm'
@@ -173,12 +178,12 @@ export default function Navbar() {
         <div className="md:hidden bg-black/80 backdrop-blur-lg shadow-lg mx-4 mt-2 rounded-lg border border-white/10">
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
             {navLinks.map((link) => {
-              const isActive = (activeLink === link.href && pathname === '/') || pathname === link.href;
+              const isActive = activeLink === link.href;
               return(
                 <Link
                   key={link.name} 
                   href={link.href} 
-                  onClick={(e) => handleLinkClick(e, link.href)}
+                  onClick={(e: React.MouseEvent<HTMLAnchorElement>) => handleLinkClick(e, link.href)}
                   className={`block px-3 py-2 rounded-md text-base font-medium transition-colors ${
                     isActive ? 'bg-[#6D46C1] text-white' : 'text-gray-300 hover:bg-white/10'
                   }`}
