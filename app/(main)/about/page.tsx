@@ -1,8 +1,7 @@
 // app/(main)/about/page.tsx
 
 import Image from 'next/image';
-import { Target, Lightbulb, Users } from 'lucide-react';
-import Link from 'next/link';
+import { Target, Lightbulb } from 'lucide-react';
 
 const AboutUsPage = () => {
     return (
@@ -12,7 +11,7 @@ const AboutUsPage = () => {
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#4c0e4c]/20 rounded-full blur-3xl -z-0"></div>
                 <div className="relative z-10 container mx-auto px-4">
                     <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-[#F3F4F6]">
-                        We're on a Mission to <span className="text-[#6D46C1]">Organize Ambition</span>.
+                        We&apos;re on a Mission to <span className="text-[#6D46C1]">Organize Ambition</span>.
                     </h1>
                     <p className="mt-6 max-w-3xl mx-auto text-lg text-[#D1D5DB]">
                         Routina was born from a simple idea: to create a tool that helps students and professionals in Bangladesh reclaim their time, focus on what matters, and achieve their biggest goals.
@@ -28,10 +27,10 @@ const AboutUsPage = () => {
                         <h2 className="text-3xl font-bold text-[#F3F4F6] mb-4">Our Story</h2>
                         <div className="space-y-4 text-[#9CA3AF]">
                             <p>
-                                The journey of Routina started not in a boardroom, but from the everyday chaos of a student's life. Juggling classes, assignments, job preparations, and personal goals felt like an endless battle against the clock. Existing productivity tools were either too simple or too complex, and none truly understood the unique challenges faced here in Bangladesh.
+                                The journey of Routina started not in a boardroom, but from the everyday chaos of a student&apos;s life. Juggling classes, assignments, job preparations, and personal goals felt like an endless battle against the clock. Existing productivity tools were either too simple or too complex, and none truly understood the unique challenges faced here in Bangladesh.
                             </p>
                             <p>
-                                I decided to build the solution I wished I had: a single, smart app that does more than just list tasks. An app that provides guidance, tracks progress, and even helps you find your next career opportunity. That's how Routina was born—a tool built with passion, for our community.
+                                I decided to build the solution I wished I had: a single, smart app that does more than just list tasks. An app that provides guidance, tracks progress, and even helps you find your next career opportunity. That&apos;s how Routina was born—a tool built with passion, for our community.
                             </p>
                         </div>
                     </div>
@@ -78,7 +77,7 @@ const AboutUsPage = () => {
                     <h3 className="text-2xl font-semibold text-white">Shakil Ahmed</h3>
                     <p className="text-[#8B5CF6] mb-2">Founder & Developer</p>
                     <p className="text-[#9CA3AF]">
-                        "I believe that with the right tools, everyone has the potential to achieve great things. I built Routina to be that tool for you. Let's grow together."
+                        &quot;I believe that with the right tools, everyone has the potential to achieve great things. I built Routina to be that tool for you. Let&apos;s grow together.&quot;
                     </p>
                 </div>
             </div>

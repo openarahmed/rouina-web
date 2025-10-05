@@ -16,7 +16,7 @@ export default function PrivacyPolicyPage() {
                 <div className="mt-12 prose prose-invert prose-lg max-w-none text-slate-300 leading-relaxed">
                     <h2>1. Introduction</h2>
                     <p>
-                        Welcome to Routina ("we," "our," "us"). We are committed to protecting your personal information and your right to privacy. This Privacy Policy explains what information we collect, how we use it, and what rights you have in relation to it. This policy applies to all information collected through our web application and any related services (collectively, the "Services").
+                        Welcome to Routina (&quot;we,&quot; &quot;our,&quot; &quot;us&quot;). We are committed to protecting your personal information and your right to privacy. This Privacy Policy explains what information we collect, how we use it, and what rights you have in relation to it. This policy applies to all information collected through our web application and any related services (collectively, the &quot;Services&quot;).
                     </p>
 
                     <h2>2. Information We Collect</h2>
@@ -60,7 +60,7 @@ export default function PrivacyPolicyPage() {
                         <li>The right to erasure – You have the right to request that we erase your personal data, under certain conditions.</li>
                     </ul>
 
-                    <h2>6. Children's Privacy</h2>
+                    <h2>6. Children&apos;s Privacy</h2>
                     <p>
                         Our Services are not intended for use by children under the age of 13. We do not knowingly collect personally identifiable information from children under 13.
                     </p>
@@ -75,7 +75,7 @@ export default function PrivacyPolicyPage() {
                         If you have any questions or concerns about this Privacy Policy, please contact us at:
                     </p>
                     <p>
-                        <strong>Email:</strong> <a href="app.routina1@gmail.com">app.routina1@gmail.com</a>
+                        <strong>Email:</strong> <a href="mailto:app.routina1@gmail.com">app.routina1@gmail.com</a>
                     </p>
                 </div>
             </main>

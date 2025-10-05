@@ -16,6 +16,18 @@ interface BlogPost {
     createdAt: string;
 }
 
+// ★★★ NEW UTILITY FUNCTION: HTML to Plain Text Converter ★★★
+function htmlToPlainText(html: string): string {
+    if (typeof window === 'undefined') return ''; // Server-side render-er jonne check
+    
+    // 1. DOMParser use kore HTML string ke DOM document e convert kora
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, 'text/html');
+    
+    // 2. Document er shob text-ke extract kora
+    return doc.body.textContent || '';
+}
+
 const BlogPage = () => {
     const [posts, setPosts] = useState<BlogPost[]>([]);
     const [loading, setLoading] = useState(true);
@@ -34,7 +46,8 @@ const BlogPage = () => {
                 return {
                     id: doc.id,
                     ...data,
-                    createdAt: (data.createdAt as Timestamp).toDate().toISOString(),
+                    // Firebase Timestamp ke string e convert kora
+                    createdAt: (data.createdAt as Timestamp).toDate().toISOString(), 
                 } as BlogPost;
             });
             setPosts(allPosts);
@@ -45,7 +58,6 @@ const BlogPage = () => {
     }, []);
 
     const featuredPost = posts[0];
-    // ★★★ FIX: Changed from slice(1, 5) to slice(1) to get ALL other posts ★★★
     const otherPosts = posts.slice(1); 
 
     const formatDate = (dateString: string) => {
@@ -65,6 +77,7 @@ const BlogPage = () => {
                     ) : (
                         <div className="space-y-16">
                             
+                            {/* ★★★ Featured Post Section ★★★ */}
                             {featuredPost && (
                                 <div className="flex flex-col md:flex-row items-center gap-8 group">
                                     <div className="w-full md:w-1/2">
@@ -73,8 +86,9 @@ const BlogPage = () => {
                                                 <Image
                                                     src={featuredPost.imageUrl}
                                                     alt={featuredPost.title}
-                                                    width={400} height={400}
+                                                    width={600} height={400}
                                                     className="w-[600px] h-auto object-cover rounded-xl aspect-[4/3] transition-transform duration-300 hover:scale-105"
+                                                    priority 
                                                 />
                                             ) : (
                                                 <div className="w-full h-auto aspect-[4/3] bg-[#2E284D] flex items-center justify-center rounded-xl">
@@ -88,9 +102,12 @@ const BlogPage = () => {
                                         <h2 className="text-3xl lg:text-4xl font-bold text-[#F3F4F6] mb-4 leading-tight text-left">
                                             <Link href={`/blogs/${featuredPost.slug}`} className="hover:text-[#8B5CF6] transition-colors">{featuredPost.title}</Link>
                                         </h2>
+                                        
+                                        {/* ★★★ UPDATE: HTML to Text applied here ★★★ */}
                                         <p className="text-[#9CA3AF] text-base line-clamp-3 mb-6 text-left">
-                                            {featuredPost.content}
+                                            {htmlToPlainText(featuredPost.content)}
                                         </p>
+                                        
                                         <Link href={`/blogs/${featuredPost.slug}`} className="inline-flex items-center gap-2 px-6 py-3 font-semibold text-white bg-[#6D46C1] rounded-full hover:bg-purple-700 transition-all duration-300">
                                             Continue Reading <ArrowRight size={18} />
                                         </Link>
@@ -98,6 +115,7 @@ const BlogPage = () => {
                                 </div>
                             )}
 
+                            {/* ★★★ Other Posts Grid ★★★ */}
                             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
                                 {otherPosts.map((post) => (
                                     <div key={post.id} className="group">

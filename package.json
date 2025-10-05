@@ -9,6 +9,13 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@tiptap/extension-color": "^3.6.5",
+    "@tiptap/extension-highlight": "^3.6.5",
+    "@tiptap/extension-text-align": "^3.6.5",
+    "@tiptap/extension-text-style": "^3.6.5",
+    "@tiptap/extension-underline": "^3.6.5",
+    "@tiptap/react": "^3.6.5",
+    "@tiptap/starter-kit": "^3.6.5",
     "firebase": "^12.3.0",
     "framer-motion": "^12.23.22",
     "lucide-react": "^0.544.0",
@@ -24,6 +31,7 @@
     "@eslint/eslintrc": "^3",
     "@tailwindcss/line-clamp": "^0.4.4",
     "@tailwindcss/postcss": "^4.1.13",
+    "@tailwindcss/typography": "^0.5.19",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",

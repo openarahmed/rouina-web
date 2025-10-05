@@ -106,7 +106,7 @@ const UltimateTestimonialSlider = () => {
   const currentTestimonial = testimonials.length > 0 ? testimonials[testimonialIndex] : null;
 
   return (
-    <section id="testimonials" className="py-20 sm:py-28 bg-[#0D0915] relative overflow-hidden">
+    <section id="testimonials" className="py-20 sm:py-28 bg-[#0D0915] relative overflow-hidden border-t">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#4c0e4c]/30 rounded-full blur-3xl"></div>
     
         <div className="container mx-auto px-4 relative z-10">
