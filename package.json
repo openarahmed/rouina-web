@@ -17,6 +17,7 @@
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "react-hot-toast": "^2.6.0",
+    "react-share": "^5.2.2",
     "recharts": "^3.2.1"
   },
   "devDependencies": {

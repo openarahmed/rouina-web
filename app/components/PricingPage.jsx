@@ -50,14 +50,14 @@ export default function RoutinaPricing() {
   ];
 
   return (
-    <section className="relative w-full bg-[#0D0915] text-white py-16 sm:py-24 px-4 sm:px-6 lg:px-8 overflow-hidden">
+    <section className="relative w-full bg-[#0D0915] text-white py-16 sm:py-24 px-4 sm:px-6 lg:px-8 overflow-hidden" id="pricing">
       {/* Decorative background elements using theme colors */}
       <div className="absolute top-20 -left-10 w-40 h-40 bg-[#6D46C1] rounded-full filter blur-3xl opacity-30"></div>
       <div className="absolute top-10 -right-10 w-40 h-40 bg-[#4c0e4c] rounded-full filter blur-3xl opacity-30"></div>
 
       <div className="relative max-w-7xl mx-auto text-center">
         <h1 className="text-4xl sm:text-6xl font-bold tracking-normal text-[#F3F4F6]">
-          Choose the right plan for you
+          Choose the right <span className='text-[#6D46C1]'> plan for you</span>
         </h1>
         <p className="mt-6 text-lg text-[#D1D5DB] max-w-2xl mx-auto">
           Start building lasting habits today. Pick a plan that works for you.

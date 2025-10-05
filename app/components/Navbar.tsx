@@ -96,9 +96,10 @@ export default function Navbar() {
     const publicNavLinks = [
         { name: 'Home', href: '/#hero' },
         { name: 'Features', href: '/#features' },
-        { name: 'Testimonials', href: '/#testimonials' },
         { name: 'Pricing', href: '/#pricing' },
+        { name: 'Testimonials', href: '/#testimonials' },
         { name: 'FAQs', href: '/#faq' },
+        { name: 'Blog', href: '/blogs' },
     ];
 
     const navLinks = [...publicNavLinks];
@@ -126,7 +127,7 @@ export default function Navbar() {
                     <div className="flex-shrink-0 z-10">
                         <NextLink href="/" className="flex items-center space-x-3">
                             <Image
-                                src="https://i.ibb.co/Nny0XrCt/logo.png"
+                                src="https://i.postimg.cc/QtXBXKxz/hicon.png"
                                 alt="Routina Logo"
                                 width={40}
                                 height={40}

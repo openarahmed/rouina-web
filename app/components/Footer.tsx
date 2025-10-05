@@ -31,10 +31,10 @@ export default function Footer() {
           <div className="lg:col-span-4 flex flex-col items-center lg:items-start text-center lg:text-left">
             {/* ★★★ FIX: Replaced <a> with <Link> for internal navigation ★★★ */}
             <Link href="/" className="flex items-center space-x-3 mb-4">
-              <div className='bg-white/10 p-1 rounded-lg'>
+              <div className=''>
                   {/* ★★★ FIX: Replaced <img> with <Image> for optimization ★★★ */}
                   <Image
-                    src="https://i.ibb.co/Nny0XrCt/logo.png"
+                    src="https://i.postimg.cc/QtXBXKxz/hicon.png"
                     alt="Routina Logo"
                     width={40}
                     height={40}
@@ -69,7 +69,7 @@ export default function Footer() {
               <a href="#download-ios" className="transform hover:scale-105 transition-transform">
                 <Image width={180} height={60} src="https://tools.applemediaservices.com/api/badges/download-on-the-app-store/black/en-us?size=250x83&amp;releaseDate=1276560000" alt="Download on the App Store" />
               </a>
-              <a href="#download-android" className="transform hover:scale-105 transition-transform">
+              <a href="#download-android" className="transform hover:scale-105 transition-transform w-[70%] ">
                 <Image width={180} height={53} src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" alt="Get it on Google Play" />
               </a>
             </div>
@@ -86,8 +86,7 @@ export default function Footer() {
               <ul className="mt-4 space-y-3">
                 {/* ★★★ FIX: Replaced all <a> tags with <Link> for internal pages ★★★ */}
                 <li><Link href="/about" className="text-base hover:text-[#6D46C1]">About Us</Link></li>
-                <li><Link href="/blog" className="text-base hover:text-[#6D46C1]">Blog</Link></li>
-                <li><Link href="/contact" className="text-base hover:text-[#6D46C1]">Contact</Link></li>
+                <li><Link href="/blogs" className="text-base hover:text-[#6D46C1]">Blog</Link></li>
                 <li><Link href="/terms" className="text-base hover:text-[#6D46C1]">Terms of Service</Link></li>
                 <li><Link href="/privacy" className="text-base hover:text-[#6D46C1]">Privacy Policy</Link></li>
               </ul>

@@ -6,13 +6,45 @@ import { PlayCircle, Download } from 'lucide-react';
 import { motion, Variants } from 'framer-motion';
 import Image from 'next/image';
 
+// The size value is kept the same as your original code for now.
 const phoneMockups = [
-    { src: "/mockups/phone-1.png", position: "bottom-[-10%] sm:bottom-[-20%] left-1/2 -translate-x-1/2", rotation: "rotate-0", animationDelay: 0.1, },
-    { src: "/mockups/phone-2.png", position: "top-[15%] left-[-10%] sm:left-[-5%]", rotation: "-rotate-[25deg]", animationDelay: 0.3, },
-    { src: "/mockups/phone-3.png", position: "top-[15%] right-[-10%] sm:right-[-5%]", rotation: "rotate-[25deg]", animationDelay: 0.5, },
-    { src: "/mockups/phone-4.png", position: "bottom-[-5%] left-[5%] sm:left-[15%]", rotation: "rotate-[15deg]", animationDelay: 0.7, },
-    { src: "/mockups/phone-5.png", position: "bottom-[-5%] right-[5%] sm:right-[15%]", rotation: "-rotate-[15deg]", animationDelay: 0.9, },
+    { 
+        src: "https://i.postimg.cc/RVM3rDZK/3.png", 
+        position: "bottom-[-20%] sm:bottom-[-20%] left-1/2 -translate-x-1/2", 
+        rotation: "rotate-0", 
+        animationDelay: 0.1, 
+        size: "w-[150px] sm:w-[250px]" 
+    },
+    { 
+        src: "https://i.postimg.cc/SQWrZtg4/1-corrected.png", 
+        position: "top-[40%] left-[-10%] sm:left-[5%]", 
+        rotation: "-rotate-[0]", 
+        animationDelay: 0.1, 
+        size: "w-[150px] sm:w-[260px]" 
+    },
+    { 
+        src: "https://i.postimg.cc/bv5KyFnd/6.png", 
+        position: "top-[40%] right-[-10%] sm:right-[0%]", 
+        rotation: "rotate-[0]", 
+        animationDelay: 0.1, 
+        size: "w-[150px] sm:w-[250px]" 
+    },
+    { 
+        src: "https://i.postimg.cc/wx5tGpgd/5.png", 
+        position: "bottom-[-25%] left-[5%] sm:left-[26%]", 
+        rotation: "rotate-[0]", 
+        animationDelay: 0.1, 
+        size: "w-[150px] sm:w-[250px]" 
+    },
+    { 
+        src: "https://i.postimg.cc/C54zBjmZ/4.png", 
+        position: "bottom-[-23%] right-[5%] sm:right-[26%]", 
+        rotation: "-rotate-[0]", 
+        animationDelay: 0.1, 
+        size: "w-[150px] sm:w-[250px]" 
+    },
 ];
+
 
 // ★★★ FIX: Added the 'Variants' type to resolve the build error ★★★
 const floatingAnimation: Variants = {
@@ -48,7 +80,7 @@ export default function Hero() {
                     
                     <div className="inline-flex items-center gap-x-2 text-[#9CA3AF] text-sm font-semibold mb-6">
                         <LaurelIcon />
-                        <span>200K+ Active Installs</span>
+                        <span>Join Our Community</span>
                         <LaurelIcon />
                     </div>
 
@@ -58,7 +90,7 @@ export default function Hero() {
                         transition={{ duration: 0.8, ease: "easeOut" }}
                         className="text-4xl sm:text-6xl font-extrabold text-[#F3F4F6] tracking-tight"
                     >
-                        Your path to <span className='text-[#6D46C1]'>getting things done</span>
+                        Smarter Way <span className='text-[#6D46C1]'>to Plan Your Day :</span> Achieve Your Goals
                     </motion.h1>
 
                     <motion.p 
@@ -67,7 +99,7 @@ export default function Hero() {
                         transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
                         className="mt-6 max-w-2xl mx-auto text-lg text-[#D1D5DB]"
                     >
-                        Packed with powerful tools that are easy to use, Routina helps you stay productive without the overwhelm.
+                        Manage your tasks, find your next job, and get smarter with daily tips, all in one place.
                     </motion.p>
 
                     <motion.div 
@@ -93,26 +125,28 @@ export default function Hero() {
             </div>
 
             {/* Floating Phone Mockups */}
-            <div className="absolute inset-0 w-full h-full z-0">
-                {phoneMockups.map((phone, index) => (
-                    <motion.div
-                        key={index}
-                        className={`absolute w-[150px] sm:w-[250px] ${phone.position} ${phone.rotation}`}
-                        custom={phone.animationDelay}
-                        variants={floatingAnimation}
-                        animate="float"
-                    >
-                        <Image
-                            src={phone.src}
-                            alt={`Routina app mockup ${index + 1}`}
-                            width={250}
-                            height={500}
-                            className="object-contain"
-                            priority={index < 3}
-                        />
-                    </motion.div>
-                ))}
-            </div>
+            {/* Floating Phone Mockups */}
+            <div className="absolute inset-0 w-full h-full z-0">
+                {phoneMockups.map((phone, index) => (
+                    <motion.div
+                        key={index}
+                        // ★★★ MODIFIED: Using dynamic size from the object ★★★
+                        className={`absolute ${phone.size} ${phone.position} ${phone.rotation}`}
+                        custom={phone.animationDelay}
+                        variants={floatingAnimation}
+                        animate="float"
+                    >
+                        <Image
+                            src={phone.src}
+                            alt={`Routina app mockup ${index + 1}`}
+                            width={170}
+                            height={500}
+                            className="object-contain"
+                            priority={index < 3}
+                        />
+                    </motion.div>
+                ))}
+            </div>
         </section>
     );
 }

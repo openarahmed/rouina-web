@@ -10,10 +10,10 @@ export default function HomePage() {
         <>
             <Hero />
             <FeaturesSection></FeaturesSection>
+            <PricingPage></PricingPage>
             <Testimonials></Testimonials>
             <FAQ></FAQ>
 
-            <PricingPage></PricingPage>
          
         </>
     );

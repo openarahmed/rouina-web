@@ -1,19 +1,20 @@
-import type { NextConfig } from "next";
-
-const nextConfig: NextConfig = {
+/** @type {import('next').NextConfig} */
+const nextConfig = {
   images: {
+    dangerouslyAllowSVG: true,
+    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: '**', // This wildcard allows all hostnames
+        hostname: '**',
       },
       {
         protocol: 'http',
-        hostname: '**', // This is for non-HTTPS sources
+        hostname: '**',
       },
     ],
   },
-  /* other config options can go here */
 };
 
-export default nextConfig;
+module.exports = nextConfig;
+

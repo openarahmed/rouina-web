@@ -224,6 +224,55 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                                     </li>
                                 </ul>
                             </div>
+                        {/* Blog Menu Group */}
+                        <div>
+                                <h3 className="mb-4 ml-4 text-sm font-semibold text-slate-400 uppercase tracking-wider">Blogs</h3>
+                                <ul className="mb-6 flex flex-col gap-1.5">
+                                    <li>
+                                        <Link
+                                            href="/blog"
+                                            onClick={() => setSidebarOpen(false)}
+                                            className={`group relative flex items-center gap-3 rounded-md py-2 px-4 font-medium text-slate-600 duration-300 ease-in-out hover:bg-slate-100 hover:text-[#6D46C1] ${
+                                            pathname === '/tips' && 'bg-[#6D46C1]/10 text-[#6D46C1]'
+                                            }`}
+                                        >
+                                            <Lightbulb size={18} />
+                                            All Blogs
+                                        </Link>
+                                    </li>
+                                    <li>
+                                        <Link
+                                            href="/blog/create"
+                                            onClick={() => setSidebarOpen(false)}
+                                            className={`group relative flex items-center gap-3 rounded-md py-2 px-4 font-medium text-slate-600 duration-300 ease-in-out hover:bg-slate-100 hover:text-[#6D46C1] ${
+                                            pathname.includes('/tips/create') && 'bg-[#6D46C1]/10 text-[#6D46C1]'
+                                            }`}
+                                        >
+                                            <FilePlus size={18} />
+                                            Create New Blogs
+                                        </Link>
+                                    </li>
+                                </ul>
+                            </div>
+                        {/* feedback */}
+                        <div>
+                                <h3 className="mb-4 ml-4 text-sm font-semibold text-slate-400 uppercase tracking-wider">User Feedback</h3>
+                                <ul className="mb-6 flex flex-col gap-1.5">
+                                    <li>
+                                        <Link
+                                            href="/feedback"
+                                            onClick={() => setSidebarOpen(false)}
+                                            className={`group relative flex items-center gap-3 rounded-md py-2 px-4 font-medium text-slate-600 duration-300 ease-in-out hover:bg-slate-100 hover:text-[#6D46C1] ${
+                                            pathname === '/tips' && 'bg-[#6D46C1]/10 text-[#6D46C1]'
+                                            }`}
+                                        >
+                                            <Lightbulb size={18} />
+                                          Feedback
+                                        </Link>
+                                    </li>
+                                   
+                                </ul>
+                            </div>
 
                     </nav>
                 </div>
