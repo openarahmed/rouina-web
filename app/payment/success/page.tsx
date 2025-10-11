@@ -1,47 +1,70 @@
-'use client';
+'use client'; // This can be a client component for simplicity now
 
-import { CheckCircle } from 'lucide-react';
+import { CheckCircle, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 import { Suspense } from 'react';
 
-// Main view for the success page
-function SuccessView() {
+// A fallback component to show while the main component is loading
+function Loading() {
     return (
-        <main className="relative bg-[#0D0915] min-h-screen flex items-center justify-center text-center p-4 overflow-hidden">
-            {/* Background glow matching success theme */}
-            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(76,_175,_80,_0.15),_transparent_70%)] -z-0"></div>
-            
-            <div className="relative z-10 w-full max-w-md p-8 space-y-6 bg-white/5 border border-[#2E284D] rounded-2xl shadow-xl backdrop-blur-sm">
-                <div className="flex flex-col items-center">
-                    <CheckCircle className="w-16 h-16 text-green-500 mb-4" />
-                    <h1 className="text-3xl font-extrabold text-[#F3F4F6]">Payment Successful!</h1>
-                    <p className="mt-2 text-[#D1D5DB]">
-                        Your account has been upgraded. You can now close this window and return to the Routina app to enjoy your premium features.
-                    </p>
-                </div>
-
-                <div className="border-t border-[#2E284D] my-6"></div>
-                
-                <p className="text-sm text-slate-400">If your premium features are not unlocked immediately, please restart the app.</p>
-                
-                <Link
-                    href="/" // Links to the homepage as a fallback action
-                    className="w-full inline-flex items-center justify-center px-7 py-3 gap-2 border border-transparent text-base font-semibold rounded-full text-white bg-[#6D46C1] hover:bg-[#8B5CF6] transition-all duration-300 transform hover:scale-105 shadow-lg shadow-[#6D46C1]/20"
-                >
-                    Go to Homepage
-                </Link>
+        <div className="flex flex-col items-center justify-center min-h-screen bg-[#0D0915] text-white p-4 sm:p-6 lg:p-8">
+            <div className="text-center">
+                <h1 className="text-3xl sm:text-4xl font-bold">Loading Payment Details...</h1>
+                <p className="mt-4 text-lg text-slate-400">Please wait while we confirm your transaction.</p>
             </div>
-        </main>
+        </div>
     );
 }
 
-// Wrapping with Suspense to prevent any potential build errors with hooks
+
+function SuccessView() {
+    const searchParams = useSearchParams();
+    const transactionId = searchParams.get('tran_id');
+
+    return (
+        <div className="flex flex-col items-center justify-center min-h-screen bg-[#0D0915] text-white p-4 sm:p-6 lg:p-8">
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(109,_70,_193,_0.15),_transparent_70%)] -z-0"></div>
+            
+            <div className="relative z-10 text-center bg-[#110D1A]/80 backdrop-blur-sm border border-[#2E284D] rounded-2xl p-8 sm:p-12 max-w-2xl w-full shadow-2xl shadow-[#6D46C1]/10">
+                <div className="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-green-100">
+                    <CheckCircle className="h-10 w-10 text-green-600" aria-hidden="true" />
+                </div>
+                <h1 className="mt-6 text-3xl sm:text-4xl font-extrabold text-[#F3F4F6] tracking-tight">
+                    Payment Successful!
+                </h1>
+                <p className="mt-4 text-lg text-slate-400">
+                    Thank you for your purchase. Your premium access has been activated.
+                </p>
+
+                {transactionId && (
+                    <div className="mt-6 text-sm text-slate-500">
+                        <p>Transaction ID:</p>
+                        <p className="font-mono bg-slate-800/50 inline-block px-2 py-1 rounded-md mt-1">{transactionId}</p>
+                    </div>
+                )}
+
+                <div className="mt-8">
+                    <Link
+                        href="/"
+                        className="inline-flex items-center justify-center px-7 py-3 gap-2 border border-transparent text-base font-semibold rounded-full text-white bg-[#6D46C1] hover:bg-[#8B5CF6] transition-all duration-300 transform hover:scale-105 shadow-lg shadow-[#6D46C1]/20"
+                    >
+                        Go to Home
+                        <ArrowRight className="w-5 h-5" />
+                    </Link>
+                </div>
+            </div>
+        </div>
+    );
+}
+
+
+// The main page component now wraps the view in Suspense
 export default function SuccessPage() {
     return (
-        <Suspense fallback={
-            <div className="bg-[#0D0915] min-h-screen flex items-center justify-center text-white">Loading...</div>
-        }>
+        <Suspense fallback={<Loading />}>
             <SuccessView />
         </Suspense>
     );
 }
+

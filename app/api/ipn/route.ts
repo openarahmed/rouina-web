@@ -2,7 +2,7 @@
 
 import { NextResponse } from 'next/server';
 import { dbAdmin } from '../../lib/firebaseAdmin';
-import SSLCommerzPayment from 'sslcommerz-lts';
+// We no longer need the sslcommerz-lts library here as we are doing manual validation.
 
 export async function POST(req: Request) {
     try {
@@ -21,12 +21,25 @@ export async function POST(req: Request) {
         }
         console.log("DEBUG: IPN status is VALID. Proceeding to server validation...");
 
-        const sslcz = new SSLCommerzPayment(store_id, store_passwd, is_live);
-        const validationResponse = await sslcz.validate({ val_id: data.val_id as string });
+        // --- FIX: Manual Validation using fetch, bypassing the library ---
+        const validationParams = new URLSearchParams();
+        validationParams.append('val_id', data.val_id as string);
+        validationParams.append('store_id', store_id!);
+        validationParams.append('store_passwd', store_passwd!);
+        validationParams.append('v', '1'); // API version
+        validationParams.append('format', 'json');
 
-        if (validationResponse.status !== 'VALID') {
+        const validationURL = is_live 
+            ? `https://securepay.sslcommerz.com/validator/api/validationserverAPI.php?${validationParams.toString()}`
+            : `https://sandbox.sslcommerz.com/validator/api/validationserverAPI.php?${validationParams.toString()}`;
+
+        const validationResponseRaw = await fetch(validationURL);
+        const validationResponse = await validationResponseRaw.json();
+        // --- END FIX ---
+
+        if (validationResponse.status !== 'VALID' && validationResponse.status !== 'VALIDATED') {
             console.error("DEBUG: SSLCommerz server validation FAILED. Response:", validationResponse);
-            return NextResponse.json({ message: "Payment validation failed" }, { status: 400 });
+            return NextResponse.json({ message: "Payment validation failed", details: validationResponse }, { status: 400 });
         }
         
         console.log("DEBUG: Server validation successful. Preparing to update database...");
@@ -47,7 +60,6 @@ export async function POST(req: Request) {
         
         console.log(`DEBUG: Attempting to update document at path: users/${uid}`);
 
-        // THE UPDATE COMMAND
         await userRef.update({
             isPremium: true,
             planType: plan,
@@ -63,7 +75,6 @@ export async function POST(req: Request) {
         return NextResponse.json({ message: 'IPN Processed Successfully' }, { status: 200 });
 
     } catch (error) {
-        // This will catch any error, including Firestore permission issues
         console.error("DEBUG: CRITICAL ERROR inside IPN handler:", error);
         return NextResponse.json({ message: 'Error processing IPN', errorDetails: (error as Error).message }, { status: 500 });
     }
