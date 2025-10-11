@@ -1,9 +1,10 @@
-'use client'; // This can be a client component for simplicity now
+'use client'; 
 
 import { CheckCircle, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { Suspense } from 'react';
+import dynamic from 'next/dynamic';
 
 // A fallback component to show while the main component is loading
 function Loading() {
@@ -46,10 +47,10 @@ function SuccessView() {
 
                 <div className="mt-8">
                     <Link
-                        href="/"
+                        href="/dashboard"
                         className="inline-flex items-center justify-center px-7 py-3 gap-2 border border-transparent text-base font-semibold rounded-full text-white bg-[#6D46C1] hover:bg-[#8B5CF6] transition-all duration-300 transform hover:scale-105 shadow-lg shadow-[#6D46C1]/20"
                     >
-                        Go to Home
+                        Go to Your Dashboard
                         <ArrowRight className="w-5 h-5" />
                     </Link>
                 </div>
@@ -58,12 +59,18 @@ function SuccessView() {
     );
 }
 
+// --- FINAL FIX: Using next/dynamic to force client-side rendering ---
+// This prevents the server from crashing when trying to render useSearchParams.
+const DynamicSuccessView = dynamic(() => Promise.resolve(SuccessView), { 
+    ssr: false, // This is the key: server-side rendering is disabled
+});
 
-// The main page component now wraps the view in Suspense
+
+// The main page component now wraps the DYNAMIC view in Suspense
 export default function SuccessPage() {
     return (
         <Suspense fallback={<Loading />}>
-            <SuccessView />
+            <DynamicSuccessView />
         </Suspense>
     );
 }
