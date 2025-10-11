@@ -2,10 +2,9 @@
 
 import { XCircle, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
-import { Suspense } from 'react';
-import dynamic from 'next/dynamic';
+import { useState, useEffect } from 'react';
 
-// A fallback component to show while the main component is loading
+// A fallback component to show on the server and initial client render
 function Loading() {
     return (
         <div className="flex flex-col items-center justify-center min-h-screen bg-[#0D0915] text-white p-4 sm:p-6 lg:p-8">
@@ -16,6 +15,7 @@ function Loading() {
     );
 }
 
+// The actual view of the page, which will only render on the client
 function FailView() {
     return (
         <div className="flex flex-col items-center justify-center min-h-screen bg-[#0D0915] text-white p-4 sm:p-6 lg:p-8">
@@ -29,7 +29,6 @@ function FailView() {
                     Payment Failed
                 </h1>
                 <p className="mt-4 text-lg text-slate-400">
-                    {/* FIX: Replaced ' with &apos; to fix build error */}
                     Unfortunately, we couldn&apos;t process your payment. No charges were made. Please try again.
                 </p>
 
@@ -47,15 +46,20 @@ function FailView() {
     );
 }
 
-const DynamicFailView = dynamic(() => Promise.resolve(FailView), { 
-    ssr: false, // Force client-side rendering
-});
-
 export default function FailPage() {
-    return (
-        <Suspense fallback={<Loading />}>
-            <DynamicFailView />
-        </Suspense>
-    );
+    const [isClient, setIsClient] = useState(false);
+
+    // This hook ensures that the component only renders on the client side
+    useEffect(() => {
+        setIsClient(true);
+    }, []);
+
+    // On the server or during the initial render, show the loading component.
+    if (!isClient) {
+        return <Loading />;
+    }
+
+    // Once mounted on the client, render the actual page view.
+    return <FailView />;
 }
 
