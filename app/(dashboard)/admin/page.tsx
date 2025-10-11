@@ -101,9 +101,10 @@ export default function AdminPage() {
             setNewId('');
             // Refetch routines to include the new one in the list
             await fetchRoutines(); 
-        } catch (error: any) {
+        } catch (error: unknown) { // ★★★ FIX: Changed 'any' to 'unknown' for type safety ★★★
             console.error("Error duplicating routine: ", error);
-            setFeedback({ type: 'error', message: error.message || 'Failed to duplicate routine.' });
+            const errorMessage = error instanceof Error ? error.message : 'Failed to duplicate routine.';
+            setFeedback({ type: 'error', message: errorMessage });
         } finally {
             setLoading(prev => ({ ...prev, duplicate: false }));
         }
@@ -145,9 +146,10 @@ export default function AdminPage() {
             setDepartmentId('');
             setCurrentSemester('');
             setNextSemester('');
-        } catch (error: any) {
+        } catch (error: unknown) { // ★★★ FIX: Changed 'any' to 'unknown' for type safety ★★★
             console.error("Error promoting students: ", error);
-            setFeedback({ type: 'error', message: error.message || 'Failed to promote students.' });
+            const errorMessage = error instanceof Error ? error.message : 'Failed to promote students.';
+            setFeedback({ type: 'error', message: errorMessage });
         } finally {
             setLoading(prev => ({ ...prev, promote: false }));
         }
