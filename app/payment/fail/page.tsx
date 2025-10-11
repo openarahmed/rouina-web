@@ -29,7 +29,8 @@ function FailView() {
                     Payment Failed
                 </h1>
                 <p className="mt-4 text-lg text-slate-400">
-                    Unfortunately, we couldn't process your payment. No charges were made. Please try again.
+                    {/* FIX: Replaced ' with &apos; to fix build error */}
+                    Unfortunately, we couldn&apos;t process your payment. No charges were made. Please try again.
                 </p>
 
                 <div className="mt-8">
