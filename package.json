@@ -25,7 +25,8 @@
     "react-dom": "19.1.0",
     "react-hot-toast": "^2.6.0",
     "react-share": "^5.2.2",
-    "recharts": "^3.2.1"
+    "recharts": "^3.2.1",
+    "uuid": "^13.0.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

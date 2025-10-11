@@ -95,6 +95,18 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                                         Dashboard
                                     </Link>
                                 </li>
+                                <li>
+                                    <Link
+                                        href="/admin"
+                                        onClick={() => setSidebarOpen(false)}
+                                        className={`group relative flex items-center gap-3 rounded-md py-2 px-4 font-medium text-slate-600 duration-300 ease-in-out hover:bg-slate-100 hover:text-[#6D46C1] ${
+                                            (pathname === '/' || pathname === '/admin') && 'bg-[#6D46C1]/10 text-[#6D46C1]'
+                                        }`}
+                                    >
+                                        <LayoutDashboard size={18} />
+                                        Promot Students
+                                    </Link>
+                                </li>
                             </ul>
                         </div>
 
